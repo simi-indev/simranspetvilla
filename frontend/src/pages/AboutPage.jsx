@@ -45,7 +45,7 @@ export default function AboutPage() {
             ].map((v, i) => {
               const Icon = v.icon;
               return (
-                <div key={i} className="card-pv" data-testid={`value-${i}`}>
+                <div key={v.t} className="card-pv" data-testid={`value-${i}`}>
                   <div className="w-12 h-12 rounded-2xl bg-brand-sage text-brand-primary flex items-center justify-center mb-4"><Icon size={22} /></div>
                   <h3 className="font-display font-extrabold text-xl mb-1.5">{v.t}</h3>
                   <p className="text-brand-muted leading-relaxed">{v.d}</p>

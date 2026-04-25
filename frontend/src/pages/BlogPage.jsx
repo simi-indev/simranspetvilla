@@ -8,6 +8,7 @@ export default function BlogPage() {
 
   React.useEffect(() => {
     api.get("/blog").then((r) => setBlogs(r.data)).catch(() => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [featured, ...rest] = blogs;

@@ -29,9 +29,11 @@ export default function AdminDashboardPage() {
   React.useEffect(() => {
     if (!getAdminToken()) { navigate("/admin"); return; }
     loadAll();
+    // loadAll is a stable function defined below; safe to omit
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate]);
 
-  const loadAll = async () => {
+  const loadAll = React.useCallback(async () => {
     setLoading(true);
     try {
       const [b, c, s, r, info] = await Promise.all([
@@ -46,7 +48,7 @@ export default function AdminDashboardPage() {
       if (e.response?.status === 401) { setAdminToken(null); navigate("/admin"); }
       else toast.error("Failed to load data");
     } finally { setLoading(false); }
-  };
+  }, [navigate]);
 
   const updateStatus = async (id, status) => {
     try {

@@ -7,6 +7,8 @@ export default function ServicesIndexPage() {
 
   React.useEffect(() => {
     api.get("/services").then((r) => setServices(r.data)).catch(() => {});
+    // api is a stable module import; setters are stable by React contract
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

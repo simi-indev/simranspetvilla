@@ -17,7 +17,7 @@ export default function TrustBar() {
       {items.map((it, i) => {
         const Icon = it.icon;
         return (
-          <div key={i} className="trust-badge" data-testid={`trust-badge-${i}`}>
+          <div key={it.label} className="trust-badge" data-testid={`trust-badge-${i}`}>
             <Icon size={14} className={it.color || ""} strokeWidth={2.4} />
             <span>{it.label}</span>
           </div>

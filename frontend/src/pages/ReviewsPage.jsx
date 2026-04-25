@@ -19,6 +19,7 @@ export default function ReviewsPage() {
 
   React.useEffect(() => {
     api.get("/reviews").then((r) => setReviews(r.data)).catch(() => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const breakdown = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
@@ -87,8 +88,8 @@ export default function ReviewsPage() {
         <div className="container-pv">
           <h2 className="font-display font-black text-3xl md:text-5xl text-brand-ink mb-10">Photos from the villa</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
-            {GALLERY.map((src, i) => (
-              <div key={i} className="overflow-hidden rounded-3xl aspect-square">
+            {GALLERY.map((src) => (
+              <div key={src} className="overflow-hidden rounded-3xl aspect-square">
                 <img src={src} alt="" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
               </div>
             ))}

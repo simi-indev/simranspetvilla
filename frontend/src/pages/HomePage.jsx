@@ -36,6 +36,7 @@ export default function HomePage() {
   React.useEffect(() => {
     api.get("/services").then((r) => setServices(r.data)).catch(() => {});
     api.get("/reviews").then((r) => setReviews(r.data)).catch(() => {});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -112,7 +113,7 @@ export default function HomePage() {
               { num: "02", title: "We confirm on WhatsApp", desc: "Within 30 minutes, you'll get a personal message confirming everything." },
               { num: "03", title: "Your pet is happy", desc: "Daily photos and videos while we look after your best friend like family." },
             ].map((s, i) => (
-              <div key={i} className="card-pv relative" data-testid={`how-step-${i + 1}`}>
+              <div key={s.num} className="card-pv relative" data-testid={`how-step-${i + 1}`}>
                 <div className="font-display font-black text-7xl text-brand-sage leading-none mb-2">{s.num}</div>
                 <h3 className="font-display font-extrabold text-xl text-brand-ink mb-2">{s.title}</h3>
                 <p className="text-brand-muted leading-relaxed">{s.desc}</p>
@@ -159,7 +160,7 @@ export default function HomePage() {
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
             {GALLERY_IMAGES.map((src, i) => (
-              <div key={i} className={`overflow-hidden rounded-3xl ${i === 0 ? "row-span-2 col-span-2 md:col-span-1 md:row-span-2" : ""}`}>
+              <div key={src} className={`overflow-hidden rounded-3xl ${i === 0 ? "row-span-2 col-span-2 md:col-span-1 md:row-span-2" : ""}`}>
                 <img src={src} alt="" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
               </div>
             ))}

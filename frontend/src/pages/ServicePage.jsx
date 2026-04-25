@@ -22,6 +22,7 @@ export default function ServicePage() {
       .catch(() => setService(null))
       .finally(() => setLoading(false));
     api.get("/services").then((r) => setAllServices(r.data));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug]);
 
   if (loading) return <div className="container-pv py-20 text-center text-brand-muted" data-testid="service-loading">Loading…</div>;
@@ -76,7 +77,7 @@ export default function ServicePage() {
           </div>
           <ul className="space-y-3">
             {service.includes.map((item, i) => (
-              <li key={i} className="flex items-start gap-3 bg-white border border-brand-border rounded-2xl p-4 shadow-soft" data-testid={`include-${i}`}>
+              <li key={item} className="flex items-start gap-3 bg-white border border-brand-border rounded-2xl p-4 shadow-soft" data-testid={`include-${i}`}>
                 <div className="w-8 h-8 rounded-xl bg-brand-sage flex items-center justify-center text-brand-primary shrink-0"><Check size={18} strokeWidth={3} /></div>
                 <span className="text-brand-ink font-medium pt-1">{item}</span>
               </li>
@@ -97,8 +98,8 @@ export default function ServicePage() {
               { n: "1", t: "Fill the form", d: "Tell us about your pet, dates and address." },
               { n: "2", t: "We confirm on WhatsApp", d: "Within 30 minutes — pricing and availability." },
               { n: "3", t: "Pet care happens", d: "We deliver the service. You relax." },
-            ].map((s, i) => (
-              <div key={i} className="card-pv">
+            ].map((s) => (
+              <div key={s.n} className="card-pv">
                 <div className="w-10 h-10 rounded-2xl bg-brand-secondary text-white flex items-center justify-center font-display font-extrabold mb-4">{s.n}</div>
                 <h3 className="font-display font-extrabold text-xl mb-1.5">{s.t}</h3>
                 <p className="text-brand-muted">{s.d}</p>

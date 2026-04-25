@@ -12,7 +12,13 @@ from dotenv import load_dotenv
 load_dotenv(Path(__file__).resolve().parents[2] / "frontend" / ".env")
 
 BASE_URL = os.environ["REACT_APP_BACKEND_URL"].rstrip("/")
-ADMIN_PASSWORD = "petvilla2026"
+# Admin password is read from env; never hardcoded. Pytest run with: ADMIN_PASSWORD=... pytest
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD") or os.environ.get("PV_ADMIN_PASSWORD")
+if not ADMIN_PASSWORD:
+    # Fall back to backend/.env so test infra can use the same source of truth as the server
+    load_dotenv(Path(__file__).resolve().parents[1] / ".env")
+    ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD")
+assert ADMIN_PASSWORD, "ADMIN_PASSWORD env var is required to run admin tests"
 
 EXPECTED_SLUGS = {
     "pet-boarding",
@@ -91,7 +97,7 @@ class TestReviews:
         for rv in data:
             assert "name" in rv and "rating" in rv and "text" in rv
             assert rv["rating"] >= 4
-            assert rv.get("visible", True) is True
+            assert rv.get("visible", True) == True  # noqa: E712
 
 
 # ---------------- Business Info (public) ----------------
@@ -199,7 +205,7 @@ class TestContact:
         d = r.json()
         assert "id" in d
         assert d["name"] == "TEST_Contact"
-        assert d["handled"] is False
+        assert d["handled"] == False  # noqa: E712
 
 
 # ---------------- Admin auth ----------------
@@ -350,7 +356,7 @@ class TestAdminReviewsCRUD:
                 json={"visible": True, "text": "TEST_Edited"},
             )
             assert r.status_code == 200
-            assert r.json()["visible"] is True
+            assert r.json()["visible"] == True  # noqa: E712
             assert r.json()["text"] == "TEST_Edited"
 
             # Now appears in public list

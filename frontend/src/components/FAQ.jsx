@@ -9,7 +9,7 @@ export default function FAQ({ items, testIdPrefix = "faq" }) {
         const isOpen = open === i;
         return (
           <div
-            key={i}
+            key={item.q}
             className={`bg-white border rounded-3xl overflow-hidden transition-all ${isOpen ? "border-brand-primary shadow-soft" : "border-brand-border"}`}
             data-testid={`${testIdPrefix}-item-${i}`}
           >

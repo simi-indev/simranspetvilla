@@ -22,28 +22,41 @@ const DEFAULT_INFO = {
   tags: ["Cage-free", "Women-owned", "LGBTQ+ friendly", "24/7 care", "500+ happy pet parents"],
 };
 
-const BusinessInfoContext = React.createContext(DEFAULT_INFO);
+const BusinessInfoContext = React.createContext({ info: DEFAULT_INFO, refresh: () => {} });
 
 export function BusinessInfoProvider({ children }) {
   const [info, setInfo] = React.useState(() => {
     try {
       const cached = localStorage.getItem("pv_business_info");
       return cached ? { ...DEFAULT_INFO, ...JSON.parse(cached) } : DEFAULT_INFO;
-    } catch { return DEFAULT_INFO; }
+    } catch (err) {
+      console.warn("[BusinessInfoProvider] Failed to read cached business info:", err);
+      return DEFAULT_INFO;
+    }
   });
 
   const refresh = React.useCallback(async () => {
     try {
       const res = await api.get("/business-info");
       setInfo({ ...DEFAULT_INFO, ...res.data });
-      localStorage.setItem("pv_business_info", JSON.stringify(res.data));
-    } catch (e) { /* fail silently, keep defaults */ }
+      try {
+        localStorage.setItem("pv_business_info", JSON.stringify(res.data));
+      } catch (storageErr) {
+        console.warn("[BusinessInfoProvider] Failed to cache business info:", storageErr);
+      }
+    } catch (err) {
+      console.warn("[BusinessInfoProvider] Failed to fetch business info, using cached/default values:", err);
+    }
   }, []);
 
-  React.useEffect(() => { refresh(); }, [refresh]);
+  React.useEffect(() => {
+    refresh();
+  }, [refresh]);
+
+  const value = React.useMemo(() => ({ info, refresh }), [info, refresh]);
 
   return (
-    <BusinessInfoContext.Provider value={{ info, refresh }}>
+    <BusinessInfoContext.Provider value={value}>
       {children}
     </BusinessInfoContext.Provider>
   );

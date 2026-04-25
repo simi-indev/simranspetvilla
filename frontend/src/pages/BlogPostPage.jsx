@@ -17,6 +17,7 @@ export default function BlogPostPage() {
   React.useEffect(() => {
     setLoading(true);
     api.get(`/blog/${slug}`).then((r) => setPost(r.data)).catch(() => setPost(null)).finally(() => setLoading(false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug]);
 
   if (loading) return <div className="container-pv py-20 text-center text-brand-muted" data-testid="blog-loading">Loading…</div>;
