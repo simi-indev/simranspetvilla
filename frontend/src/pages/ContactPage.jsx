@@ -1,9 +1,11 @@
 import React from "react";
-import { api, WHATSAPP_LINK } from "../lib/api";
+import { api } from "../lib/api";
+import { useBusinessInfo, buildWhatsAppLink } from "../lib/businessInfo";
 import { MapPin, Phone, Mail, MessageCircle, Clock } from "lucide-react";
 import { toast } from "sonner";
 
 export default function ContactPage() {
+  const { info } = useBusinessInfo();
   const [form, setForm] = React.useState({ name: "", phone: "", email: "", message: "" });
   const [loading, setLoading] = React.useState(false);
 
@@ -39,35 +41,39 @@ export default function ContactPage() {
               <div className="w-11 h-11 rounded-2xl bg-brand-sage flex items-center justify-center text-brand-primary shrink-0"><MapPin size={20} /></div>
               <div>
                 <div className="font-display font-bold text-brand-ink">Visit the villa</div>
-                <div className="text-brand-muted text-sm mt-0.5">Lohegaon, Pune — 411047 (Free pre-booking visit, by appointment)</div>
+                <div className="text-brand-muted text-sm mt-0.5">{info.address}</div>
+                <a href={info.google_maps_url} target="_blank" rel="noreferrer" className="text-brand-primary text-sm font-display font-bold mt-1 inline-block hover:underline">Open in Google Maps →</a>
               </div>
             </div>
             <div className="card-pv flex items-start gap-4" data-testid="contact-phone">
               <div className="w-11 h-11 rounded-2xl bg-brand-sage flex items-center justify-center text-brand-primary shrink-0"><Phone size={20} /></div>
               <div>
                 <div className="font-display font-bold text-brand-ink">Call us</div>
-                <div className="text-brand-muted text-sm mt-0.5">+91 98765 43210 (9 AM – 9 PM)</div>
+                <div className="text-brand-muted text-sm mt-0.5">
+                  <a href={`tel:${info.phone_primary.replace(/\s/g, "")}`} className="hover:text-brand-primary block">{info.phone_primary}</a>
+                  {info.phone_secondary && <a href={`tel:${info.phone_secondary.replace(/\s/g, "")}`} className="hover:text-brand-primary block">{info.phone_secondary}</a>}
+                </div>
               </div>
             </div>
-            <a href={WHATSAPP_LINK()} target="_blank" rel="noreferrer" className="card-pv flex items-start gap-4 hover:border-brand-primary" data-testid="contact-whatsapp">
+            <a href={buildWhatsAppLink(info.whatsapp_number)} target="_blank" rel="noreferrer" className="card-pv flex items-start gap-4 hover:border-brand-primary" data-testid="contact-whatsapp">
               <div className="w-11 h-11 rounded-2xl bg-[#25D366] flex items-center justify-center text-white shrink-0"><MessageCircle size={20} /></div>
               <div>
                 <div className="font-display font-bold text-brand-ink">Message on WhatsApp</div>
                 <div className="text-brand-muted text-sm mt-0.5">Fastest way — replies in under 30 minutes</div>
               </div>
             </a>
-            <div className="card-pv flex items-start gap-4" data-testid="contact-email">
+            <a href={`mailto:${info.email}`} className="card-pv flex items-start gap-4 hover:border-brand-primary" data-testid="contact-email">
               <div className="w-11 h-11 rounded-2xl bg-brand-sage flex items-center justify-center text-brand-primary shrink-0"><Mail size={20} /></div>
               <div>
                 <div className="font-display font-bold text-brand-ink">Email</div>
-                <div className="text-brand-muted text-sm mt-0.5">hello@simranspetvilla.com</div>
+                <div className="text-brand-muted text-sm mt-0.5">{info.email}</div>
               </div>
-            </div>
+            </a>
             <div className="card-pv flex items-start gap-4">
               <div className="w-11 h-11 rounded-2xl bg-brand-sage flex items-center justify-center text-brand-primary shrink-0"><Clock size={20} /></div>
               <div>
                 <div className="font-display font-bold text-brand-ink">Hours</div>
-                <div className="text-brand-muted text-sm mt-0.5">Mon–Sun · 9 AM – 9 PM (drop-off & pickup by appointment)</div>
+                <div className="text-brand-muted text-sm mt-0.5">{info.hours}</div>
               </div>
             </div>
           </div>
@@ -81,7 +87,7 @@ export default function ContactPage() {
               </Field>
               <div className="grid md:grid-cols-2 gap-4">
                 <Field label="Phone (WhatsApp)" testid="contact-phone-field">
-                  <input className="input-pv" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder="+91 98765 43210" data-testid="contact-phone-input" />
+                  <input className="input-pv" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder="+91 99889 75056" data-testid="contact-phone-input" />
                 </Field>
                 <Field label="Email (optional)" testid="contact-email-field">
                   <input type="email" className="input-pv" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="you@example.com" data-testid="contact-email-input" />
@@ -98,7 +104,7 @@ export default function ContactPage() {
         </div>
 
         <div className="mt-10 rounded-3xl overflow-hidden border border-brand-border h-[360px] shadow-soft">
-          <iframe title="PetVilla Map" src="https://www.google.com/maps?q=Lohegaon%2C%20Pune&output=embed" className="w-full h-full" loading="lazy" />
+          <iframe title="PetVilla Map" src={`https://www.google.com/maps?q=${encodeURIComponent(info.address)}&output=embed`} className="w-full h-full" loading="lazy" />
         </div>
       </div>
 

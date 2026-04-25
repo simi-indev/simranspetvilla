@@ -1,21 +1,26 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Heart, Shield, Star, Award, Home as HomeIcon } from "lucide-react";
+import { Heart, Shield, Star, Award, Home as HomeIcon, Clock, Utensils, Truck } from "lucide-react";
+import { useBusinessInfo } from "../lib/businessInfo";
 
 export default function AboutPage() {
+  const { info } = useBusinessInfo();
   return (
     <div data-testid="about-page">
       <section className="section-pad bg-brand-bg border-b border-brand-border">
         <div className="container-pv grid md:grid-cols-2 gap-12 items-center">
           <div>
             <span className="trust-badge mb-3">Our story</span>
-            <h1 className="font-display font-black text-4xl md:text-[52px] text-brand-ink leading-tight">A home, not a hospital. A family, not a chain.</h1>
+            <h1 className="font-display font-black text-4xl md:text-[52px] text-brand-ink leading-tight">{info.tagline}. A real home, not a kennel.</h1>
             <p className="text-brand-muted mt-5 text-lg leading-relaxed">
-              I'm Simran. Six years ago I started boarding a few dogs in my own home in Lohegaon because I couldn't bear to see them in cages. What began as a favour to friends turned into Pune's most-reviewed cage-free pet care home.
+              I'm <strong className="text-brand-ink">{info.founder_name}</strong>. Years ago I started boarding a few dogs in my own home in Lohegaon because I couldn't bear to see them in cages. What began as a favour to friends turned into one of Pune's most-loved cage-free pet care homes — rated <strong className="text-brand-primary">{info.rating}★</strong> by over <strong className="text-brand-primary">{info.review_count}+ pet parents</strong>.
             </p>
             <p className="text-brand-muted mt-4 text-lg leading-relaxed">
-              Today, we look after 8 pets at any time — sleeping, playing, eating and getting groomed in the same warm home. Plus, our team delivers grooming, sitting, food and training across Pune to pets who prefer to stay in their own bed.
+              At Simran's PetVilla we believe pets aren't just animals — they're family. Our mission is to provide pets with a safe, fun, nurturing environment while giving pet parents complete peace of mind. We're open <strong className="text-brand-ink">24 hours a day, 7 days a week</strong>, with emergency vet care just minutes away.
             </p>
+            <div className="mt-5 flex flex-wrap gap-2">
+              {(info.tags || []).map((t) => <span key={t} className="trust-badge">{t}</span>)}
+            </div>
           </div>
           <div className="rounded-3xl overflow-hidden shadow-hover aspect-[4/5]">
             <img src="https://images.unsplash.com/photo-1534361960057-19889db9621e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwxfHxoYXBweSUyMGRvZ3xlbnwwfHx8fDE3NzcwOTk3ODR8MA&ixlib=rb-4.1.0&q=85" alt="Simran with dogs" className="w-full h-full object-cover" />
@@ -26,17 +31,17 @@ export default function AboutPage() {
       <section className="section-pad" data-testid="values-section">
         <div className="container-pv">
           <div className="max-w-2xl mb-12">
-            <span className="trust-badge mb-3">What makes us different</span>
+            <span className="trust-badge mb-3">Why choose us</span>
             <h2 className="font-display font-black text-3xl md:text-5xl text-brand-ink leading-tight">Cage-free is not a marketing line. It's a promise.</h2>
           </div>
           <div className="grid md:grid-cols-3 gap-5">
             {[
-              { icon: HomeIcon, t: "Real home", d: "Pets sleep on dog beds in shared rooms — never in kennels or cages." },
-              { icon: Shield, t: "Vaccinated only", d: "Every pet must show current vaccination certificates. Zero exceptions." },
-              { icon: Heart, t: "Max 8 at a time", d: "We cap intake so every pet gets real attention — not assembly-line care." },
-              { icon: Star, t: "4.4★ on Google", d: "80+ verified reviews from real Pune pet parents. We respond to every one." },
-              { icon: Award, t: "6 years of experience", d: "Hundreds of stays, dozens of breeds, and one unbroken 5-star track record." },
-              { icon: Heart, t: "Vet on call 24/7", d: "Partner vet 5 minutes away for emergencies. We've never had a serious incident." },
+              { icon: HomeIcon, t: "Spacious & hygienic", d: "Dedicated areas for play, relaxation and grooming. Pets sleep on real beds — never kennels." },
+              { icon: Utensils, t: "Home-cooked meals", d: "Wholesome, fresh food made with love — because your pet deserves more than processed kibble." },
+              { icon: Clock, t: "Open 24 hours", d: "Pet lovers on duty round-the-clock. Drop-off, pickup and emergency support — anytime." },
+              { icon: Truck, t: "Pickup & drop", d: "Hassle-free transport across Pune. We come to you so your pet's day starts and ends stress-free." },
+              { icon: Heart, t: "Vet on call", d: "Partner emergency vet minutes away. We've never had a serious incident in our care." },
+              { icon: Star, t: `${info.rating}★ on Google`, d: `${info.review_count}+ verified reviews from real Pune pet parents. We respond to every single one within 24 hours.` },
             ].map((v, i) => {
               const Icon = v.icon;
               return (

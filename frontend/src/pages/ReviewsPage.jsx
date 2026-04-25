@@ -1,5 +1,6 @@
 import React from "react";
 import { api } from "../lib/api";
+import { useBusinessInfo } from "../lib/businessInfo";
 import { Star, Quote } from "lucide-react";
 
 const GALLERY = [
@@ -13,6 +14,7 @@ const GALLERY = [
 ];
 
 export default function ReviewsPage() {
+  const { info } = useBusinessInfo();
   const [reviews, setReviews] = React.useState([]);
 
   React.useEffect(() => {
@@ -21,8 +23,8 @@ export default function ReviewsPage() {
 
   const breakdown = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
   reviews.forEach((r) => { breakdown[r.rating] = (breakdown[r.rating] || 0) + 1; });
-  const totalReviews = 80; // hardcoded to match brand claim
-  const avg = 4.4;
+  const totalReviews = info.review_count || 500;
+  const avg = info.rating || 4.8;
 
   return (
     <div data-testid="reviews-page">
@@ -44,7 +46,7 @@ export default function ReviewsPage() {
               <h3 className="font-display font-bold mb-4">Rating breakdown</h3>
               {[5, 4, 3, 2, 1].map((star) => {
                 const count = breakdown[star] || 0;
-                const pct = reviews.length > 0 ? (count / reviews.length) * 100 : (star === 5 ? 80 : star === 4 ? 15 : 5);
+                const pct = reviews.length > 0 ? (count / reviews.length) * 100 : (star === 5 ? 92 : star === 4 ? 8 : 0);
                 return (
                   <div key={star} className="flex items-center gap-3 mb-2">
                     <div className="w-12 text-sm text-brand-ink">{star}★</div>

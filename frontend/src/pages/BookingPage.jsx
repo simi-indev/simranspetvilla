@@ -1,7 +1,8 @@
 import React from "react";
 import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import * as LucideIcons from "lucide-react";
-import { api, WHATSAPP_LINK } from "../lib/api";
+import { api } from "../lib/api";
+import { useBusinessInfo, buildWhatsAppLink } from "../lib/businessInfo";
 import { Check, ArrowLeft, ArrowRight, Calendar, MessageCircle, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -337,6 +338,7 @@ function ReviewBlock({ title, children }) {
 }
 
 function Step6Done({ booking }) {
+  const { info } = useBusinessInfo();
   const summaryMessage = `Hi! I just booked: ${booking.services.join(", ")} for ${booking.pet.name} on ${booking.start_date}. Booking ID: ${booking.id.slice(0, 8)}. Please confirm.`;
   return (
     <div className="text-center py-6" data-testid="booking-step-done">
@@ -349,7 +351,7 @@ function Step6Done({ booking }) {
         Booking ID: <strong className="text-brand-primary">{booking.id.slice(0, 8).toUpperCase()}</strong>
       </div>
       <div className="mt-7 flex flex-wrap gap-3 justify-center">
-        <a href={WHATSAPP_LINK(summaryMessage)} target="_blank" rel="noreferrer" className="btn-primary" data-testid="done-whatsapp-btn">
+        <a href={buildWhatsAppLink(info.whatsapp_number, summaryMessage)} target="_blank" rel="noreferrer" className="btn-primary" data-testid="done-whatsapp-btn">
           <MessageCircle size={18} /> Send to WhatsApp
         </a>
         <Link to="/" className="btn-outline" data-testid="done-home-btn">Back to home</Link>

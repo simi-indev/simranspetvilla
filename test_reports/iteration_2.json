@@ -1,0 +1,38 @@
+{
+  "summary": "Iteration 2 testing for Simran's PetVilla covering new MongoDB-backed business_info + reviews CRUD with admin dashboard. Backend: 32/32 pytest tests passed including new tests for GET /api/business-info (validates rating=4.8, review_count=500, phone +91 99889 75056, whatsapp 919988975056, email simran.kaurgill9@gmail.com, tags Women-owned + LGBTQ+ friendly), GET /api/reviews public-filter (rating>=4 + visible=true), PUT /api/admin/business-info (auth + restore), GET/POST/PATCH/DELETE /api/admin/reviews CRUD, low-rating + hidden review exclusion from public list, invalid rating 6 returns 400, 404 on missing review id, GET /api/admin/stats includes reviews_total + reviews_visible. Original business_info values restored after PUT tests. Frontend: homepage shows 4.8★ badge, 500+ reviews/pet parents floating cards, trust bar (4.8★·500+ reviews / Open 24/7 / Women-owned), tagline 'Your Pet's Second Home', description mentions 'Open 24 hours', WhatsApp links all use real number 919988975056 (no placeholder 919876543210). Footer + Contact page show real address (Suryasadan, Lohegaon-Wagholi Road), both phones (tel:+919988975056 / tel:+917760834823), email mailto:simran.kaurgill9@gmail.com, Open in Google Maps -> https://maps.app.goo.gl/xQ543QJ34P9vnNRE9, founder Simran Kaur Gill. Reviews page shows 4.8 / 500+ verified, 100% 5★ breakdown, all 6 reviewers visible. Admin dashboard (login petvilla2026) shows 4 tabs (Bookings, Contact Leads, Reviews, Business Info) plus Visible Reviews stat card (=6). Reviews tab lists all reviews with eye/edit/delete + Add review button. Business Info tab pre-populated with all current values. CRITICAL E2E: edited tagline to 'TEST_TAGLINE_E2E' via admin -> Save -> 'Business info updated' toast -> reloaded home page -> new tagline displayed -> restored original tagline. State verified clean after run.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_petvilla_api.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "server.py is now 686 lines — still mixes models + static catalog (services/blogs) + DB seed + routes. Recommend splitting into models.py, data/services_catalog.py, routers/admin.py, routers/public.py before adding more features.",
+    "DEFAULT_BUSINESS_INFO is duplicated as a Python dict (line ~290) and as the seed source for db.business_info — fine, but make sure any change to default values is also reflected in PRD and admin form placeholders.",
+    "Admin auth still uses a hardcoded fallback ADMIN_TOKEN inside server.py. Production should fail fast if the env var is missing rather than fall back.",
+    "POST /api/admin/reviews accepts raw text without sanitization — if reviews are rendered with dangerouslySetInnerHTML anywhere, this is XSS risk. Confirm the frontend always renders review.text as plain text.",
+    "Public GET /api/reviews returns reviews sorted by created_at desc but seeded reviews have no created_at — they currently sort by Mongo insertion order. After admin adds a real review it will jump to top. Consider backfilling created_at on seeded rows or specifying a stable display_order.",
+    "No pagination on /api/admin/reviews or /api/reviews — to_list(500/1000) is fine for now but add pagination before reviews scale beyond a few hundred."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_petvilla_api.py"
+  ],
+  "success_rate": {
+    "backend": "100% (32/32 pytest)",
+    "frontend": "100% on tested flows — homepage hero/trust bar/floating cards, contact page, reviews page, footer, WhatsApp links, admin login, admin 4 tabs, admin reviews tab, admin business-info edit + propagate to home + restore."
+  },
+  "test_credentials": "Admin password: petvilla2026 (in /app/memory/test_credentials.md)",
+  "seed_data_creation": "All TEST_* reviews and TEST_TAGLINE_E2E created during testing were cleaned up. Business info verified restored to original values via curl /api/business-info after run. test_petvilla_api.py also creates 2 TEST_ bookings (status pet + bad-status pet) per run — these accumulate in db.bookings; main agent may want to add a teardown fixture to delete them by name prefix.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Backend pytest suite at /app/backend/tests/test_petvilla_api.py now has 32 tests covering services, reviews (public-filter), business-info, blog, bookings, contact, admin auth, admin business-info PUT, admin reviews CRUD, admin booking status. Run via: pytest /app/backend/tests/test_petvilla_api.py -v. Tests are self-restoring for business_info but leak a few TEST_* bookings. Admin token: pv-admin-secret-token-2026 returned by POST /api/admin/login with password petvilla2026. The whole real-data set (4.8/500/+91 99889 75056/919988975056/simran.kaurgill9@gmail.com/Lohegaon address/Women-owned + LGBTQ+ friendly) is now MongoDB-backed via business_info collection; default values live in DEFAULT_BUSINESS_INFO in server.py and seed on startup if collection is empty.",
+  "rca of the issue": "No issues found. All iteration 2 features (real data on website, non-negative reviews filter, admin-editable business info, admin reviews CRUD, end-to-end propagation from admin save to homepage) work correctly."
+}

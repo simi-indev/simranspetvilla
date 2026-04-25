@@ -80,16 +80,36 @@ class TestServices:
         assert r.status_code == 404
 
 
-# ---------------- Reviews ----------------
+# ---------------- Reviews (public, filtered) ----------------
 class TestReviews:
-    def test_list_reviews(self, api):
+    def test_list_reviews_only_visible_and_high_rating(self, api):
         r = api.get(f"{BASE_URL}/api/reviews")
         assert r.status_code == 200
         data = r.json()
         assert isinstance(data, list)
-        assert len(data) == 6
+        # Public endpoint must filter out hidden + low rating reviews
         for rv in data:
             assert "name" in rv and "rating" in rv and "text" in rv
+            assert rv["rating"] >= 4
+            assert rv.get("visible", True) is True
+
+
+# ---------------- Business Info (public) ----------------
+class TestBusinessInfo:
+    def test_business_info_returns_real_data(self, api):
+        r = api.get(f"{BASE_URL}/api/business-info")
+        assert r.status_code == 200
+        d = r.json()
+        # Real data from Google Maps listing
+        assert d["name"] == "Simran's PetVilla"
+        assert d["rating"] == 4.8
+        assert d["review_count"] == 500
+        assert d["phone_primary"] == "+91 99889 75056"
+        assert d["whatsapp_number"] == "919988975056"
+        assert d["email"] == "simran.kaurgill9@gmail.com"
+        tags = d.get("tags", [])
+        assert "Women-owned" in tags
+        assert "LGBTQ+ friendly" in tags
 
 
 # ---------------- Blog ----------------
@@ -211,9 +231,156 @@ class TestAdminAuth:
         r = admin_api.get(f"{BASE_URL}/api/admin/stats")
         assert r.status_code == 200
         d = r.json()
-        for k in ["total_bookings", "new", "confirmed", "completed", "cancelled", "contacts"]:
+        for k in [
+            "total_bookings", "new", "confirmed", "completed", "cancelled",
+            "contacts", "reviews_total", "reviews_visible",
+        ]:
             assert k in d
             assert isinstance(d[k], int)
+
+
+# ---------------- Admin: Business Info update ----------------
+class TestAdminBusinessInfo:
+    def test_put_business_info_requires_auth(self, api):
+        r = api.put(f"{BASE_URL}/api/admin/business-info", json={"rating": 4.7})
+        assert r.status_code in (401, 403)
+
+    def test_put_business_info_updates_and_restores(self, api, admin_api):
+        # Capture original values to restore at the end
+        orig = api.get(f"{BASE_URL}/api/business-info").json()
+        try:
+            # Update a few fields
+            new_payload = {
+                "rating": 4.9,
+                "review_count": 555,
+                "tagline": "TEST_TAGLINE",
+                "phone_primary": "+91 90000 00001",
+            }
+            r = admin_api.put(f"{BASE_URL}/api/admin/business-info", json=new_payload)
+            assert r.status_code == 200, r.text
+            d = r.json()
+            assert d["rating"] == 4.9
+            assert d["review_count"] == 555
+            assert d["tagline"] == "TEST_TAGLINE"
+            assert d["phone_primary"] == "+91 90000 00001"
+
+            # Verify persisted via public GET
+            d2 = api.get(f"{BASE_URL}/api/business-info").json()
+            assert d2["rating"] == 4.9
+            assert d2["tagline"] == "TEST_TAGLINE"
+        finally:
+            # Restore original values so other iterations don't see corrupted state
+            restore = {
+                "rating": orig.get("rating", 4.8),
+                "review_count": orig.get("review_count", 500),
+                "tagline": orig.get("tagline", "Your Pet's Second Home"),
+                "phone_primary": orig.get("phone_primary", "+91 99889 75056"),
+                "whatsapp_number": orig.get("whatsapp_number", "919988975056"),
+            }
+            admin_api.put(f"{BASE_URL}/api/admin/business-info", json=restore)
+
+
+# ---------------- Admin: Reviews CRUD ----------------
+class TestAdminReviewsCRUD:
+    def test_admin_list_reviews_includes_all(self, admin_api, api):
+        r = admin_api.get(f"{BASE_URL}/api/admin/reviews")
+        assert r.status_code == 200
+        admin_reviews = r.json()
+        public_reviews = api.get(f"{BASE_URL}/api/reviews").json()
+        # Admin list should be >= public list (admin sees hidden + low rating)
+        assert len(admin_reviews) >= len(public_reviews)
+
+    def test_admin_reviews_requires_auth(self, api):
+        assert api.get(f"{BASE_URL}/api/admin/reviews").status_code in (401, 403)
+        assert api.post(f"{BASE_URL}/api/admin/reviews", json={}).status_code in (401, 403)
+
+    def test_create_review_invalid_rating(self, admin_api):
+        payload = {
+            "name": "TEST_BadRating", "pet": "Pet", "rating": 6,
+            "service": "Pet Boarding", "text": "Too high",
+        }
+        r = admin_api.post(f"{BASE_URL}/api/admin/reviews", json=payload)
+        assert r.status_code == 400
+
+    def test_low_rating_review_excluded_from_public(self, admin_api, api):
+        payload = {
+            "name": "TEST_NegativeReviewer", "pet": "TEST_Pet", "rating": 2,
+            "service": "Pet Boarding", "text": "TEST_Bad experience", "visible": True,
+        }
+        r = admin_api.post(f"{BASE_URL}/api/admin/reviews", json=payload)
+        assert r.status_code == 200, r.text
+        rid = r.json()["id"]
+        try:
+            public = api.get(f"{BASE_URL}/api/reviews").json()
+            ids = {rv["id"] for rv in public}
+            assert rid not in ids, "Low-rating review must not appear in public list"
+        finally:
+            admin_api.delete(f"{BASE_URL}/api/admin/reviews/{rid}")
+
+    def test_hidden_review_excluded_from_public(self, admin_api, api):
+        payload = {
+            "name": "TEST_HiddenReviewer", "pet": "TEST_Pet", "rating": 5,
+            "service": "Pet Boarding", "text": "TEST_Hidden", "visible": False,
+        }
+        r = admin_api.post(f"{BASE_URL}/api/admin/reviews", json=payload)
+        assert r.status_code == 200, r.text
+        rid = r.json()["id"]
+        try:
+            public = api.get(f"{BASE_URL}/api/reviews").json()
+            ids = {rv["id"] for rv in public}
+            assert rid not in ids, "Hidden 5-star review must not appear in public list"
+        finally:
+            admin_api.delete(f"{BASE_URL}/api/admin/reviews/{rid}")
+
+    def test_patch_review_toggles_visibility_and_text(self, admin_api, api):
+        # Create a hidden review then make it visible
+        payload = {
+            "name": "TEST_ToggleReviewer", "pet": "TEST_Pet", "rating": 5,
+            "service": "Pet Sitting", "text": "TEST_Original", "visible": False,
+        }
+        rid = admin_api.post(f"{BASE_URL}/api/admin/reviews", json=payload).json()["id"]
+        try:
+            # Confirm hidden
+            public_ids_before = {rv["id"] for rv in api.get(f"{BASE_URL}/api/reviews").json()}
+            assert rid not in public_ids_before
+
+            # Toggle visible + edit text
+            r = admin_api.patch(
+                f"{BASE_URL}/api/admin/reviews/{rid}",
+                json={"visible": True, "text": "TEST_Edited"},
+            )
+            assert r.status_code == 200
+            assert r.json()["visible"] is True
+            assert r.json()["text"] == "TEST_Edited"
+
+            # Now appears in public list
+            public_ids_after = {rv["id"] for rv in api.get(f"{BASE_URL}/api/reviews").json()}
+            assert rid in public_ids_after
+        finally:
+            admin_api.delete(f"{BASE_URL}/api/admin/reviews/{rid}")
+
+    def test_patch_review_not_found(self, admin_api):
+        r = admin_api.patch(
+            f"{BASE_URL}/api/admin/reviews/non-existent-xyz",
+            json={"text": "x"},
+        )
+        assert r.status_code == 404
+
+    def test_delete_review_not_found(self, admin_api):
+        r = admin_api.delete(f"{BASE_URL}/api/admin/reviews/non-existent-xyz")
+        assert r.status_code == 404
+
+    def test_create_then_delete_review(self, admin_api):
+        payload = {
+            "name": "TEST_CreateDelete", "pet": "TEST_Pet", "rating": 5,
+            "service": "Pet Boarding", "text": "TEST_Will be deleted",
+        }
+        rid = admin_api.post(f"{BASE_URL}/api/admin/reviews", json=payload).json()["id"]
+        r = admin_api.delete(f"{BASE_URL}/api/admin/reviews/{rid}")
+        assert r.status_code == 200
+        # Verify gone via PATCH on same id returns 404
+        r2 = admin_api.patch(f"{BASE_URL}/api/admin/reviews/{rid}", json={"text": "x"})
+        assert r2.status_code == 404
 
 
 # ---------------- Admin status update ----------------

@@ -14,27 +14,30 @@ import BookingPage from "./pages/BookingPage";
 import AdminLoginPage from "./pages/AdminLoginPage";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
 import { Toaster } from "sonner";
+import { BusinessInfoProvider } from "./lib/businessInfo";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route element={<Layout />}>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/services" element={<ServicesIndexPage />} />
-          <Route path="/services/:slug" element={<ServicePage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/reviews" element={<ReviewsPage />} />
-          <Route path="/blog" element={<BlogPage />} />
-          <Route path="/blog/:slug" element={<BlogPostPage />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/book" element={<BookingPage />} />
-          <Route path="/admin" element={<AdminLoginPage />} />
-          <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
-        </Route>
-      </Routes>
-      <Toaster position="top-center" richColors />
-    </BrowserRouter>
+    <BusinessInfoProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route element={<Layout />}>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/services" element={<ServicesIndexPage />} />
+            <Route path="/services/:slug" element={<ServicePage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/reviews" element={<ReviewsPage />} />
+            <Route path="/blog" element={<BlogPage />} />
+            <Route path="/blog/:slug" element={<BlogPostPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/book" element={<BookingPage />} />
+            <Route path="/admin" element={<AdminLoginPage />} />
+            <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
+          </Route>
+        </Routes>
+        <Toaster position="top-center" richColors />
+      </BrowserRouter>
+    </BusinessInfoProvider>
   );
 }
 

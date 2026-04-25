@@ -25,7 +25,7 @@ export function adminHeaders() {
   return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
-// Constants
-export const WHATSAPP_NUMBER = "919876543210"; // placeholder Pune number
+// Constants - real values, used as fallback. Live values come from useBusinessInfo hook.
+export const WHATSAPP_NUMBER = "919988975056";
 export const WHATSAPP_LINK = (msg = "Hi! I'd like to know more about Simran's PetVilla services.") =>
   `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;

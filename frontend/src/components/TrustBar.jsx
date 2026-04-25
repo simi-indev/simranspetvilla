@@ -1,15 +1,17 @@
 import React from "react";
-import { Star, Shield, Truck, MapPin, Heart } from "lucide-react";
-
-const items = [
-  { icon: Star, label: "4.4★ · 80+ reviews", color: "text-yellow-500" },
-  { icon: Heart, label: "100% Cage-free" },
-  { icon: Truck, label: "Pickup & Drop" },
-  { icon: MapPin, label: "Pune-wide" },
-  { icon: Shield, label: "Vaccinated only" },
-];
+import { Star, Shield, Truck, MapPin, Heart, Clock } from "lucide-react";
+import { useBusinessInfo } from "../lib/businessInfo";
 
 export default function TrustBar() {
+  const { info } = useBusinessInfo();
+  const items = [
+    { icon: Star, label: `${info.rating}★ · ${info.review_count}+ reviews`, color: "text-yellow-500" },
+    { icon: Heart, label: "100% Cage-free" },
+    { icon: Clock, label: "Open 24/7" },
+    { icon: Truck, label: "Pickup & Drop" },
+    { icon: MapPin, label: "Pune-wide" },
+    { icon: Shield, label: "Women-owned" },
+  ];
   return (
     <div className="flex flex-wrap items-center justify-center gap-2.5 md:gap-3" data-testid="trust-bar">
       {items.map((it, i) => {

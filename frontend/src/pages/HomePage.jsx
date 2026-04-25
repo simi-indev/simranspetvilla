@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { api, WHATSAPP_LINK } from "../lib/api";
+import { useBusinessInfo, buildWhatsAppLink } from "../lib/businessInfo";
 import ServiceCard from "../components/ServiceCard";
 import TrustBar from "../components/TrustBar";
 import FAQ from "../components/FAQ";
@@ -29,6 +30,8 @@ const GALLERY_IMAGES = [
 export default function HomePage() {
   const [services, setServices] = React.useState([]);
   const [reviews, setReviews] = React.useState([]);
+  const { info } = useBusinessInfo();
+  const waLink = buildWhatsAppLink(info.whatsapp_number);
 
   React.useEffect(() => {
     api.get("/services").then((r) => setServices(r.data)).catch(() => {});
@@ -42,18 +45,18 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-br from-brand-sage/40 via-transparent to-brand-peach/40 pointer-events-none" />
         <div className="container-pv relative pt-12 md:pt-20 pb-12 md:pb-20 grid md:grid-cols-2 gap-10 md:gap-14 items-center">
           <div className="animate-fade-up">
-            <span className="trust-badge mb-5" data-testid="hero-eyebrow"><Star size={14} className="text-yellow-500" /> Pune's most trusted cage-free pet care</span>
+            <span className="trust-badge mb-5" data-testid="hero-eyebrow"><Star size={14} className="text-yellow-500" /> Pune's most trusted cage-free pet care · {info.rating}★ on Google</span>
             <h1 className="font-display font-black text-[42px] md:text-[60px] leading-[1.05] text-brand-ink tracking-tight">
               A real <span className="text-brand-primary">home</span> for your pet — <span className="bg-brand-peach px-2 -rotate-1 inline-block rounded-lg">not a cage.</span>
             </h1>
             <p className="text-brand-muted mt-5 md:mt-6 text-lg leading-relaxed max-w-xl">
-              Boarding, daycare, home grooming, sitting, fresh-cooked food and training — six trusted pet services run from one cozy home in Lohegaon, Pune.
+              {info.tagline}. Boarding, daycare, home grooming, sitting, fresh-cooked food and training — six trusted pet services from a real home in Lohegaon, Pune. Open 24 hours.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link to="/book" className="btn-primary" data-testid="hero-book-btn">
                 <Calendar size={18} /> Book a Service
               </Link>
-              <a href={WHATSAPP_LINK()} target="_blank" rel="noreferrer" className="btn-outline" data-testid="hero-whatsapp-btn">
+              <a href={waLink} target="_blank" rel="noreferrer" className="btn-outline" data-testid="hero-whatsapp-btn">
                 <MessageCircle size={18} /> Chat on WhatsApp
               </a>
             </div>
@@ -67,15 +70,15 @@ export default function HomePage() {
             <div className="hidden md:flex absolute -bottom-6 -left-6 bg-white rounded-3xl shadow-hover px-5 py-4 items-center gap-3 max-w-xs">
               <div className="w-10 h-10 rounded-full bg-brand-secondary flex items-center justify-center text-white"><Smile size={20} /></div>
               <div>
-                <div className="font-display font-extrabold text-brand-ink leading-tight">8+ pets every day</div>
+                <div className="font-display font-extrabold text-brand-ink leading-tight">{info.review_count}+ pet parents</div>
                 <div className="text-xs text-brand-muted">cage-free, vet-checked, loved</div>
               </div>
             </div>
             <div className="hidden md:flex absolute -top-6 -right-6 bg-brand-primary text-white rounded-3xl shadow-hover px-5 py-4 items-center gap-3">
               <Star size={22} fill="currentColor" />
               <div>
-                <div className="font-display font-black text-2xl leading-none">4.4</div>
-                <div className="text-xs opacity-90">on Google · 80+ reviews</div>
+                <div className="font-display font-black text-2xl leading-none">{info.rating}</div>
+                <div className="text-xs opacity-90">on Google · {info.review_count}+ reviews</div>
               </div>
             </div>
           </div>
@@ -125,7 +128,7 @@ export default function HomePage() {
           <div className="flex items-end justify-between flex-wrap gap-4 mb-10">
             <div className="max-w-2xl">
               <span className="trust-badge mb-3">Real Pune pet parents</span>
-              <h2 className="font-display font-black text-[32px] md:text-5xl text-brand-ink leading-tight">Loved by 80+ families.</h2>
+              <h2 className="font-display font-black text-[32px] md:text-5xl text-brand-ink leading-tight">Loved by {info.review_count}+ families.</h2>
             </div>
             <Link to="/reviews" className="btn-outline" data-testid="see-all-reviews-btn">See all reviews <ArrowRight size={16} /></Link>
           </div>
@@ -180,7 +183,7 @@ export default function HomePage() {
           <div className="rounded-3xl overflow-hidden shadow-soft border border-brand-border h-[360px]">
             <iframe
               title="PetVilla Map"
-              src="https://www.google.com/maps?q=Lohegaon%2C%20Pune&output=embed"
+              src={`https://www.google.com/maps?q=${encodeURIComponent(info.address)}&output=embed`}
               className="w-full h-full"
               loading="lazy"
             />
@@ -209,7 +212,7 @@ export default function HomePage() {
             <p className="relative text-white/85 mt-4 text-lg max-w-xl mx-auto">Book in 90 seconds. We confirm on WhatsApp within 30 minutes.</p>
             <div className="relative mt-7 flex flex-wrap gap-3 justify-center">
               <Link to="/book" className="bg-white text-brand-primary hover:bg-brand-bg transition-all rounded-full px-8 py-3 font-display font-bold shadow-lg" data-testid="cta-book-btn">Book a Service</Link>
-              <a href={WHATSAPP_LINK()} target="_blank" rel="noreferrer" className="bg-[#25D366] hover:bg-[#1ea957] transition-all rounded-full px-8 py-3 font-display font-bold inline-flex items-center gap-2" data-testid="cta-whatsapp-btn"><MessageCircle size={18} /> WhatsApp Us</a>
+              <a href={waLink} target="_blank" rel="noreferrer" className="bg-[#25D366] hover:bg-[#1ea957] transition-all rounded-full px-8 py-3 font-display font-bold inline-flex items-center gap-2" data-testid="cta-whatsapp-btn"><MessageCircle size={18} /> WhatsApp Us</a>
             </div>
           </div>
         </div>

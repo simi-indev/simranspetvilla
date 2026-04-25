@@ -1,7 +1,8 @@
 import React from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import * as LucideIcons from "lucide-react";
-import { api, WHATSAPP_LINK } from "../lib/api";
+import { api } from "../lib/api";
+import { useBusinessInfo, buildWhatsAppLink } from "../lib/businessInfo";
 import FAQ from "../components/FAQ";
 import ServiceCard from "../components/ServiceCard";
 import { Check, ArrowRight, Calendar, MessageCircle } from "lucide-react";
@@ -9,6 +10,7 @@ import { Check, ArrowRight, Calendar, MessageCircle } from "lucide-react";
 export default function ServicePage() {
   const { slug } = useParams();
   const navigate = useNavigate();
+  const { info } = useBusinessInfo();
   const [service, setService] = React.useState(null);
   const [allServices, setAllServices] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
@@ -55,7 +57,7 @@ export default function ServicePage() {
             </div>
             <div className="mt-7 flex flex-wrap gap-3">
               <button onClick={() => navigate(`/book?service=${service.slug}`)} className="btn-primary" data-testid="service-book-btn"><Calendar size={18} /> Book {service.name}</button>
-              <a href={WHATSAPP_LINK(`Hi, I'd like to know more about ${service.name}.`)} target="_blank" rel="noreferrer" className="btn-outline" data-testid="service-whatsapp-btn"><MessageCircle size={18} /> Ask on WhatsApp</a>
+              <a href={buildWhatsAppLink(info.whatsapp_number, `Hi, I'd like to know more about ${service.name}.`)} target="_blank" rel="noreferrer" className="btn-outline" data-testid="service-whatsapp-btn"><MessageCircle size={18} /> Ask on WhatsApp</a>
             </div>
           </div>
           <div className="aspect-[4/3] rounded-3xl overflow-hidden shadow-hover">

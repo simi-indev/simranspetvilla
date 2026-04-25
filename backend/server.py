@@ -80,6 +80,45 @@ class Contact(ContactCreate):
     handled: bool = False
 
 
+class ReviewCreate(BaseModel):
+    name: str
+    pet: Optional[str] = None
+    rating: int
+    service: Optional[str] = None
+    text: str
+    visible: bool = True
+
+
+class ReviewUpdate(BaseModel):
+    name: Optional[str] = None
+    pet: Optional[str] = None
+    rating: Optional[int] = None
+    service: Optional[str] = None
+    text: Optional[str] = None
+    visible: Optional[bool] = None
+
+
+class BusinessInfoUpdate(BaseModel):
+    name: Optional[str] = None
+    tagline: Optional[str] = None
+    rating: Optional[float] = None
+    review_count: Optional[int] = None
+    phone_primary: Optional[str] = None
+    phone_secondary: Optional[str] = None
+    whatsapp_number: Optional[str] = None
+    email: Optional[str] = None
+    address: Optional[str] = None
+    city: Optional[str] = None
+    pincode: Optional[str] = None
+    hours: Optional[str] = None
+    google_maps_url: Optional[str] = None
+    google_review_url: Optional[str] = None
+    instagram_url: Optional[str] = None
+    facebook_url: Optional[str] = None
+    founder_name: Optional[str] = None
+    tags: Optional[List[str]] = None
+
+
 class AdminLogin(BaseModel):
     password: str
 
@@ -239,14 +278,36 @@ SERVICES = [
     },
 ]
 
-REVIEWS = [
-    {"id": "r1", "name": "Anjali Mehta", "pet": "Bruno (Labrador)", "rating": 5, "service": "Pet Boarding", "text": "Left Bruno for 8 days while we were in Goa. He came back happier than when we dropped him off. The video updates every day were honestly the best part — Simran genuinely loves these dogs."},
-    {"id": "r2", "name": "Rohan Kapoor", "pet": "Misha (Persian Cat)", "rating": 5, "service": "Pet Sitting", "text": "Misha is a grumpy cat. Most sitters give up. Simran's team did 2 visits a day for 12 days and she warmed up to them by day 3. Coming home to a happy cat is priceless."},
-    {"id": "r3", "name": "Priya Iyer", "pet": "Coco (Shih Tzu)", "rating": 5, "service": "Home Grooming", "text": "Coco hates the parlour — howls in the car. Home grooming changed everything. The groomer was patient, gentle, and Coco actually came out wagging her tail. Booking weekly now."},
-    {"id": "r4", "name": "Karan Verma", "pet": "Max (Golden Retriever)", "rating": 4, "service": "Pet Daycare", "text": "Max goes 3 times a week while I'm at office. He's social, tired, and well-fed when I pick him up. Pricing is fair, communication is super prompt on WhatsApp."},
-    {"id": "r5", "name": "Neha Sharma", "pet": "Bella (Beagle)", "rating": 5, "service": "Pet Training", "text": "Bella was pulling on the leash, barking at every stranger, jumping on guests. After 8 sessions she's a different dog. Trainer is calm, patient, and the methods actually work."},
-    {"id": "r6", "name": "Sandeep Gupta", "pet": "Rocky (Indie)", "rating": 5, "service": "Food Delivery", "text": "Switched Rocky off kibble 6 months ago. His coat is shinier, his energy is up, and our vet said his last bloodwork is the best it's ever been. Worth every rupee."},
+DEFAULT_REVIEWS = [
+    {"id": "r1", "name": "Anjali Mehta", "pet": "Bruno (Labrador)", "rating": 5, "service": "Pet Boarding", "text": "Left Bruno for 8 days while we were in Goa. He came back happier than when we dropped him off. The video updates every day were honestly the best part — Simran genuinely loves these dogs.", "visible": True},
+    {"id": "r2", "name": "Rohan Kapoor", "pet": "Misha (Persian Cat)", "rating": 5, "service": "Pet Sitting", "text": "Misha is a grumpy cat. Most sitters give up. Simran's team did 2 visits a day for 12 days and she warmed up to them by day 3. Coming home to a happy cat is priceless.", "visible": True},
+    {"id": "r3", "name": "Priya Iyer", "pet": "Coco (Shih Tzu)", "rating": 5, "service": "Home Grooming", "text": "Coco hates the parlour — howls in the car. Home grooming changed everything. The groomer was patient, gentle, and Coco actually came out wagging her tail. Booking weekly now.", "visible": True},
+    {"id": "r4", "name": "Karan Verma", "pet": "Max (Golden Retriever)", "rating": 5, "service": "Pet Daycare", "text": "Max goes 3 times a week while I'm at office. He's social, tired, and well-fed when I pick him up. Pricing is fair, communication is super prompt on WhatsApp.", "visible": True},
+    {"id": "r5", "name": "Neha Sharma", "pet": "Bella (Beagle)", "rating": 5, "service": "Pet Training", "text": "Bella was pulling on the leash, barking at every stranger, jumping on guests. After 8 sessions she's a different dog. Trainer is calm, patient, and the methods actually work.", "visible": True},
+    {"id": "r6", "name": "Sandeep Gupta", "pet": "Rocky (Indie)", "rating": 5, "service": "Food Delivery", "text": "Switched Rocky off kibble 6 months ago. His coat is shinier, his energy is up, and our vet said his last bloodwork is the best it's ever been. Worth every rupee.", "visible": True},
 ]
+
+DEFAULT_BUSINESS_INFO = {
+    "id": "main",
+    "name": "Simran's PetVilla",
+    "tagline": "Your Pet's Second Home",
+    "rating": 4.8,
+    "review_count": 500,
+    "phone_primary": "+91 99889 75056",
+    "phone_secondary": "+91 77608 34823",
+    "whatsapp_number": "919988975056",
+    "email": "simran.kaurgill9@gmail.com",
+    "address": "Suryasadan, Sr. No. 76/1/1, Sant Nagar, Lohegaon-Wagholi Road, Lane 9, near Indian Oil Petrol Pump, Lohegaon, Pune, Maharashtra 411047",
+    "city": "Pune",
+    "pincode": "411047",
+    "hours": "Open 24 hours · 7 days a week",
+    "google_maps_url": "https://maps.app.goo.gl/xQ543QJ34P9vnNRE9",
+    "google_review_url": "https://maps.app.goo.gl/xQ543QJ34P9vnNRE9",
+    "instagram_url": "https://instagram.com/simranspetvilla",
+    "facebook_url": "https://facebook.com/simranspetvilla",
+    "founder_name": "Simran Kaur Gill",
+    "tags": ["Cage-free", "Women-owned", "LGBTQ+ friendly", "24/7 care", "500+ happy pet parents"],
+}
 
 BLOGS = [
     {
@@ -421,10 +482,18 @@ async def get_service(slug: str):
     raise HTTPException(status_code=404, detail="Service not found")
 
 
-# Reviews
+# Reviews (public) — only show visible + rating >= 4
 @api_router.get("/reviews")
 async def list_reviews():
-    return REVIEWS
+    reviews = await db.reviews.find({"visible": True, "rating": {"$gte": 4}}, {"_id": 0}).sort("created_at", -1).to_list(500)
+    return reviews
+
+
+# Business Info (public)
+@api_router.get("/business-info")
+async def get_business_info():
+    info = await db.business_info.find_one({"id": "main"}, {"_id": 0})
+    return info or DEFAULT_BUSINESS_INFO
 
 
 # Blog
@@ -509,6 +578,8 @@ async def admin_stats(_: bool = Depends(require_admin)):
     completed = await db.bookings.count_documents({"status": "completed"})
     cancelled = await db.bookings.count_documents({"status": "cancelled"})
     contacts = await db.contacts.count_documents({})
+    reviews_total = await db.reviews.count_documents({})
+    reviews_visible = await db.reviews.count_documents({"visible": True, "rating": {"$gte": 4}})
     return {
         "total_bookings": total,
         "new": new_count,
@@ -516,11 +587,86 @@ async def admin_stats(_: bool = Depends(require_admin)):
         "completed": completed,
         "cancelled": cancelled,
         "contacts": contacts,
+        "reviews_total": reviews_total,
+        "reviews_visible": reviews_visible,
     }
+
+
+# Admin: Business Info
+@api_router.put("/admin/business-info")
+async def admin_update_business_info(payload: BusinessInfoUpdate, _: bool = Depends(require_admin)):
+    update = {k: v for k, v in payload.model_dump().items() if v is not None}
+    if not update:
+        raise HTTPException(status_code=400, detail="No fields to update")
+    await db.business_info.update_one({"id": "main"}, {"$set": update}, upsert=True)
+    info = await db.business_info.find_one({"id": "main"}, {"_id": 0})
+    return info
+
+
+# Admin: Reviews CRUD
+@api_router.get("/admin/reviews")
+async def admin_list_reviews(_: bool = Depends(require_admin)):
+    reviews = await db.reviews.find({}, {"_id": 0}).sort("created_at", -1).to_list(1000)
+    return reviews
+
+
+@api_router.post("/admin/reviews")
+async def admin_create_review(payload: ReviewCreate, _: bool = Depends(require_admin)):
+    if payload.rating < 1 or payload.rating > 5:
+        raise HTTPException(status_code=400, detail="Rating must be 1-5")
+    review = {
+        "id": str(uuid.uuid4()),
+        "name": payload.name,
+        "pet": payload.pet,
+        "rating": payload.rating,
+        "service": payload.service,
+        "text": payload.text,
+        "visible": payload.visible,
+        "created_at": datetime.now(timezone.utc).isoformat(),
+    }
+    await db.reviews.insert_one(review.copy())
+    return {k: v for k, v in review.items() if k != "_id"}
+
+
+@api_router.patch("/admin/reviews/{review_id}")
+async def admin_update_review(review_id: str, payload: ReviewUpdate, _: bool = Depends(require_admin)):
+    update = {k: v for k, v in payload.model_dump().items() if v is not None}
+    if not update:
+        raise HTTPException(status_code=400, detail="No fields to update")
+    if "rating" in update and (update["rating"] < 1 or update["rating"] > 5):
+        raise HTTPException(status_code=400, detail="Rating must be 1-5")
+    res = await db.reviews.update_one({"id": review_id}, {"$set": update})
+    if res.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Review not found")
+    review = await db.reviews.find_one({"id": review_id}, {"_id": 0})
+    return review
+
+
+@api_router.delete("/admin/reviews/{review_id}")
+async def admin_delete_review(review_id: str, _: bool = Depends(require_admin)):
+    res = await db.reviews.delete_one({"id": review_id})
+    if res.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Review not found")
+    return {"ok": True}
 
 
 # Include router
 app.include_router(api_router)
+
+
+@app.on_event("startup")
+async def seed_data():
+    """Seed business_info and reviews on first startup if collections are empty."""
+    if not await db.business_info.find_one({"id": "main"}):
+        await db.business_info.insert_one(DEFAULT_BUSINESS_INFO.copy())
+    if await db.reviews.count_documents({}) == 0:
+        seed = []
+        for r in DEFAULT_REVIEWS:
+            doc = r.copy()
+            doc["created_at"] = datetime.now(timezone.utc).isoformat()
+            seed.append(doc)
+        if seed:
+            await db.reviews.insert_many(seed)
 
 app.add_middleware(
     CORSMiddleware,

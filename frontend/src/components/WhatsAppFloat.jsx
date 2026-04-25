@@ -1,10 +1,11 @@
 import React from "react";
-import { WHATSAPP_LINK } from "../lib/api";
+import { buildWhatsAppLink, useBusinessInfo } from "../lib/businessInfo";
 
 export default function WhatsAppFloat() {
+  const { info } = useBusinessInfo();
   return (
     <a
-      href={WHATSAPP_LINK()}
+      href={buildWhatsAppLink(info.whatsapp_number)}
       target="_blank"
       rel="noreferrer"
       data-testid="whatsapp-float"
