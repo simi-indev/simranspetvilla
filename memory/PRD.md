@@ -45,6 +45,15 @@ Build the website + Progressive Web App for Simran's PetVilla, a cage-free pet c
 - [x] PWA manifest + theme color
 - [x] Backend: 12 endpoints (services, reviews, blog, bookings, contact, admin auth, admin bookings/contacts/stats)
 
+## Iteration 2 — REAL DATA + ADMIN CONTENT MANAGEMENT (Apr 25, 2026)
+Real Google Business data integrated everywhere (rating 4.8, 500+ reviews, real address Suryasadan/Lohegaon-Wagholi Road, phones +91 99889 75056 / +91 77608 34823, email simran.kaurgill9@gmail.com, WhatsApp 919988975056, Open 24/7, Women-owned + LGBTQ+ friendly tags, founder Simran Kaur Gill).
+- [x] Public reviews filtered server-side: only `rating >= 4 AND visible == true` are shown on the website (no negative reviews)
+- [x] `business_info` MongoDB collection with seed-on-startup
+- [x] `reviews` MongoDB collection with seed-on-startup
+- [x] React Context `BusinessInfoProvider` propagates business info to header/footer/hero/trust-bar/contact/WhatsApp links — refreshes after admin edits
+- [x] **Admin Business Info tab** — editable form for name, tagline, rating, review_count, phones, WhatsApp, email, address, hours, social links, founder, tags. Save updates the website in real-time.
+- [x] **Admin Reviews tab** — CRUD + visibility toggle. Add new review, edit existing, hide/show on website (eye icon), delete. Reviews auto-filtered when rating drops below 4.
+
 ## Backend API Endpoints
 - `GET /api/services` · `GET /api/services/{slug}`
 - `GET /api/reviews`
