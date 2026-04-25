@@ -2,8 +2,11 @@ import React from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { api, adminHeaders, setAdminToken, getAdminToken } from "../lib/api";
 import { useBusinessInfo } from "../lib/businessInfo";
-import { LogOut, Download, RefreshCw, PawPrint, Calendar, CheckCircle, XCircle, Clock, Phone, Mail, MapPin, MessageSquare, Star, Edit, Trash2, Plus, Eye, EyeOff, Save, Building2 } from "lucide-react";
+import { LogOut, Download, RefreshCw, PawPrint, Calendar, CheckCircle, XCircle, Clock, Phone, Mail, MapPin, MessageSquare, Star } from "lucide-react";
 import { toast } from "sonner";
+import ReviewsTab from "../components/admin/ReviewsTab";
+import BusinessInfoTab from "../components/admin/BusinessInfoTab";
+import { StatCard, FilterChip, DetailRow } from "../components/admin/AdminUI";
 
 const STATUS_OPTIONS = ["new", "confirmed", "completed", "cancelled"];
 const STATUS_COLORS = {
@@ -136,13 +139,20 @@ export default function AdminDashboardPage() {
               </button>
             </div>
 
-            {loading ? <div className="card-pv text-center text-brand-muted">Loading bookings…</div> : filteredBookings.length === 0 ? (
-              <div className="card-pv text-center text-brand-muted py-12" data-testid="no-bookings">
-                <PawPrint size={32} className="mx-auto mb-3 opacity-50" />
-                No bookings yet. They'll appear here as soon as customers book on the website.
-              </div>
-            ) : (
-              <div className="bg-white border border-brand-border rounded-3xl overflow-hidden" data-testid="bookings-table-wrap">
+            {(() => {
+              if (loading) {
+                return <div className="card-pv text-center text-brand-muted">Loading bookings…</div>;
+              }
+              if (filteredBookings.length === 0) {
+                return (
+                  <div className="card-pv text-center text-brand-muted py-12" data-testid="no-bookings">
+                    <PawPrint size={32} className="mx-auto mb-3 opacity-50" />
+                    No bookings yet. They'll appear here as soon as customers book on the website.
+                  </div>
+                );
+              }
+              return (
+                <div className="bg-white border border-brand-border rounded-3xl overflow-hidden" data-testid="bookings-table-wrap">
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm" data-testid="bookings-table">
                     <thead className="bg-brand-bg border-b border-brand-border text-brand-muted text-xs uppercase tracking-wider">
@@ -169,8 +179,9 @@ export default function AdminDashboardPage() {
                     </tbody>
                   </table>
                 </div>
-              </div>
-            )}
+                </div>
+              );
+            })()}
           </>
         )}
 
@@ -246,214 +257,5 @@ export default function AdminDashboardPage() {
         </div>
       )}
     </div>
-  );
-}
-
-// ---------------- Reviews Tab ----------------
-function ReviewsTab({ reviews, reload }) {
-  const [editing, setEditing] = React.useState(null);
-  const [creating, setCreating] = React.useState(false);
-
-  const toggleVisible = async (r) => {
-    try {
-      await api.patch(`/admin/reviews/${r.id}`, { visible: !r.visible }, { headers: adminHeaders() });
-      toast.success(r.visible ? "Review hidden from website" : "Review now visible");
-      reload();
-    } catch (e) { toast.error("Failed to update"); }
-  };
-
-  const remove = async (r) => {
-    if (!window.confirm(`Delete review by ${r.name}?`)) return;
-    try {
-      await api.delete(`/admin/reviews/${r.id}`, { headers: adminHeaders() });
-      toast.success("Review deleted");
-      reload();
-    } catch (e) { toast.error("Failed to delete"); }
-  };
-
-  return (
-    <div data-testid="reviews-tab">
-      <div className="flex items-center justify-between mb-4">
-        <div className="text-sm text-brand-muted">{reviews.length} review{reviews.length !== 1 ? "s" : ""} · only ratings ≥4★ and visible ones show on the website</div>
-        <button onClick={() => setCreating(true)} className="btn-primary text-sm py-2 px-4" data-testid="add-review-btn"><Plus size={14} /> Add review</button>
-      </div>
-      <div className="space-y-3">
-        {reviews.length === 0 ? (
-          <div className="card-pv text-center text-brand-muted py-12">No reviews yet.</div>
-        ) : reviews.map((r) => (
-          <div key={r.id} className={`card-pv ${!r.visible ? "opacity-60" : ""}`} data-testid={`review-row-${r.id}`}>
-            <div className="flex items-start justify-between gap-3 flex-wrap">
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-1 flex-wrap">
-                  <span className="font-display font-bold text-brand-ink">{r.name}</span>
-                  <span className="flex items-center gap-0.5">{[...Array(r.rating)].map((_, i) => <Star key={i} size={12} className="text-yellow-500" fill="currentColor" />)}</span>
-                  {!r.visible && <span className="text-xs px-2 py-0.5 bg-red-50 text-red-700 rounded-full">Hidden</span>}
-                  {r.rating < 4 && <span className="text-xs px-2 py-0.5 bg-orange-50 text-orange-700 rounded-full">Auto-filtered (low rating)</span>}
-                </div>
-                <div className="text-xs text-brand-muted mb-2">{r.pet || "—"} · {r.service || "General"}</div>
-                <p className="text-brand-ink leading-relaxed text-sm">"{r.text}"</p>
-              </div>
-              <div className="flex flex-col gap-1.5 shrink-0">
-                <button onClick={() => toggleVisible(r)} className="p-2 rounded-xl hover:bg-brand-sage/40 text-brand-muted" title={r.visible ? "Hide" : "Show"} data-testid={`toggle-review-${r.id}`}>
-                  {r.visible ? <Eye size={16} /> : <EyeOff size={16} />}
-                </button>
-                <button onClick={() => setEditing(r)} className="p-2 rounded-xl hover:bg-brand-sage/40 text-brand-primary" title="Edit" data-testid={`edit-review-${r.id}`}><Edit size={16} /></button>
-                <button onClick={() => remove(r)} className="p-2 rounded-xl hover:bg-red-50 text-red-500" title="Delete" data-testid={`delete-review-${r.id}`}><Trash2 size={16} /></button>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-      {(editing || creating) && <ReviewModal review={editing} onClose={() => { setEditing(null); setCreating(false); }} onSaved={() => { setEditing(null); setCreating(false); reload(); }} />}
-    </div>
-  );
-}
-
-function ReviewModal({ review, onClose, onSaved }) {
-  const [form, setForm] = React.useState(review || { name: "", pet: "", rating: 5, service: "", text: "", visible: true });
-  const [saving, setSaving] = React.useState(false);
-
-  const save = async (e) => {
-    e.preventDefault();
-    if (!form.name || !form.text) { toast.error("Name and text are required"); return; }
-    setSaving(true);
-    try {
-      if (review) await api.patch(`/admin/reviews/${review.id}`, form, { headers: adminHeaders() });
-      else await api.post("/admin/reviews", form, { headers: adminHeaders() });
-      toast.success(review ? "Review updated" : "Review added");
-      onSaved();
-    } catch (e) { toast.error("Save failed"); }
-    finally { setSaving(false); }
-  };
-
-  return (
-    <div className="fixed inset-0 z-40 flex items-center justify-center p-4 bg-black/40" onClick={onClose} data-testid="review-modal">
-      <form onClick={(e) => e.stopPropagation()} onSubmit={save} className="bg-white rounded-3xl p-6 md:p-8 w-full max-w-lg shadow-2xl max-h-[90vh] overflow-y-auto">
-        <h3 className="font-display font-black text-xl text-brand-ink mb-4">{review ? "Edit review" : "Add review"}</h3>
-        <div className="space-y-3">
-          <Input label="Name" value={form.name} onChange={(v) => setForm({ ...form, name: v })} testid="review-name-input" />
-          <Input label="Pet (optional)" value={form.pet || ""} onChange={(v) => setForm({ ...form, pet: v })} testid="review-pet-input" placeholder="Bruno (Labrador)" />
-          <div className="grid grid-cols-2 gap-3">
-            <label className="block">
-              <span className="block text-sm font-display font-bold text-brand-ink mb-1.5">Rating</span>
-              <select value={form.rating} onChange={(e) => setForm({ ...form, rating: parseInt(e.target.value) })} className="w-full p-3 px-4 bg-brand-bg border-2 border-brand-border rounded-2xl outline-none focus:border-brand-primary" data-testid="review-rating-input">
-                {[5, 4, 3, 2, 1].map((n) => <option key={n} value={n}>{n}★</option>)}
-              </select>
-            </label>
-            <Input label="Service" value={form.service || ""} onChange={(v) => setForm({ ...form, service: v })} testid="review-service-input" placeholder="Pet Boarding" />
-          </div>
-          <label className="block">
-            <span className="block text-sm font-display font-bold text-brand-ink mb-1.5">Review text</span>
-            <textarea rows={4} value={form.text} onChange={(e) => setForm({ ...form, text: e.target.value })} className="w-full p-3 px-4 bg-brand-bg border-2 border-brand-border rounded-2xl outline-none focus:border-brand-primary resize-none" data-testid="review-text-input" />
-          </label>
-          <label className="flex items-center gap-2 text-sm text-brand-ink">
-            <input type="checkbox" checked={form.visible} onChange={(e) => setForm({ ...form, visible: e.target.checked })} className="w-4 h-4 accent-brand-primary" data-testid="review-visible-input" />
-            Visible on website
-          </label>
-        </div>
-        <div className="mt-6 flex gap-2 justify-end">
-          <button type="button" onClick={onClose} className="px-4 py-2 rounded-xl border border-brand-border" data-testid="review-cancel-btn">Cancel</button>
-          <button type="submit" disabled={saving} className="btn-primary py-2 px-5" data-testid="review-save-btn"><Save size={14} /> {saving ? "Saving…" : "Save"}</button>
-        </div>
-      </form>
-    </div>
-  );
-}
-
-// ---------------- Business Info Tab ----------------
-function BusinessInfoTab({ info, reload }) {
-  const [form, setForm] = React.useState(info);
-  const [saving, setSaving] = React.useState(false);
-
-  React.useEffect(() => { setForm(info); }, [info]);
-
-  const save = async (e) => {
-    e.preventDefault();
-    setSaving(true);
-    try {
-      const payload = { ...form };
-      if (typeof payload.tags === "string") payload.tags = payload.tags.split(",").map((t) => t.trim()).filter(Boolean);
-      if (typeof payload.rating === "string") payload.rating = parseFloat(payload.rating) || 4.8;
-      if (typeof payload.review_count === "string") payload.review_count = parseInt(payload.review_count) || 0;
-      await api.put("/admin/business-info", payload, { headers: adminHeaders() });
-      toast.success("Business info updated");
-      reload();
-    } catch (e) { toast.error("Save failed"); }
-    finally { setSaving(false); }
-  };
-
-  return (
-    <form onSubmit={save} className="card-pv max-w-3xl" data-testid="business-info-tab">
-      <div className="flex items-center gap-3 mb-4">
-        <div className="w-12 h-12 rounded-2xl bg-brand-sage flex items-center justify-center text-brand-primary"><Building2 size={22} /></div>
-        <div>
-          <h2 className="font-display font-black text-xl text-brand-ink">Business information</h2>
-          <p className="text-sm text-brand-muted">Edits here update the website immediately — header, footer, contact page and trust bar.</p>
-        </div>
-      </div>
-      <div className="grid md:grid-cols-2 gap-3">
-        <Input label="Business name" value={form.name || ""} onChange={(v) => setForm({ ...form, name: v })} testid="biz-name" />
-        <Input label="Tagline" value={form.tagline || ""} onChange={(v) => setForm({ ...form, tagline: v })} testid="biz-tagline" />
-        <Input label="Founder name" value={form.founder_name || ""} onChange={(v) => setForm({ ...form, founder_name: v })} testid="biz-founder" />
-        <Input label="Hours" value={form.hours || ""} onChange={(v) => setForm({ ...form, hours: v })} testid="biz-hours" />
-        <Input label="Rating (e.g. 4.8)" value={form.rating ?? ""} onChange={(v) => setForm({ ...form, rating: v })} testid="biz-rating" />
-        <Input label="Review count" value={form.review_count ?? ""} onChange={(v) => setForm({ ...form, review_count: v })} testid="biz-review-count" />
-        <Input label="Primary phone" value={form.phone_primary || ""} onChange={(v) => setForm({ ...form, phone_primary: v })} testid="biz-phone-primary" />
-        <Input label="Secondary phone" value={form.phone_secondary || ""} onChange={(v) => setForm({ ...form, phone_secondary: v })} testid="biz-phone-secondary" />
-        <Input label="WhatsApp number (digits, e.g. 919988975056)" value={form.whatsapp_number || ""} onChange={(v) => setForm({ ...form, whatsapp_number: v })} testid="biz-whatsapp" />
-        <Input label="Email" value={form.email || ""} onChange={(v) => setForm({ ...form, email: v })} testid="biz-email" />
-        <Input label="Google Maps URL" value={form.google_maps_url || ""} onChange={(v) => setForm({ ...form, google_maps_url: v })} testid="biz-maps-url" />
-        <Input label="Google Review URL" value={form.google_review_url || ""} onChange={(v) => setForm({ ...form, google_review_url: v })} testid="biz-review-url" />
-        <Input label="Instagram URL" value={form.instagram_url || ""} onChange={(v) => setForm({ ...form, instagram_url: v })} testid="biz-instagram" />
-        <Input label="Facebook URL" value={form.facebook_url || ""} onChange={(v) => setForm({ ...form, facebook_url: v })} testid="biz-facebook" />
-        <Input label="City" value={form.city || ""} onChange={(v) => setForm({ ...form, city: v })} testid="biz-city" />
-        <Input label="Pincode" value={form.pincode || ""} onChange={(v) => setForm({ ...form, pincode: v })} testid="biz-pincode" />
-      </div>
-      <label className="block mt-3">
-        <span className="block text-sm font-display font-bold text-brand-ink mb-1.5">Full address</span>
-        <textarea rows={2} value={form.address || ""} onChange={(e) => setForm({ ...form, address: e.target.value })} className="w-full p-3 px-4 bg-brand-bg border-2 border-brand-border rounded-2xl outline-none focus:border-brand-primary resize-none" data-testid="biz-address" />
-      </label>
-      <label className="block mt-3">
-        <span className="block text-sm font-display font-bold text-brand-ink mb-1.5">Tags (comma-separated)</span>
-        <input value={Array.isArray(form.tags) ? form.tags.join(", ") : (form.tags || "")} onChange={(e) => setForm({ ...form, tags: e.target.value })} className="w-full p-3 px-4 bg-brand-bg border-2 border-brand-border rounded-2xl outline-none focus:border-brand-primary" data-testid="biz-tags" />
-      </label>
-      <button type="submit" disabled={saving} className="btn-primary mt-6" data-testid="biz-save-btn"><Save size={14} /> {saving ? "Saving…" : "Save changes"}</button>
-    </form>
-  );
-}
-
-// ---------------- Helpers ----------------
-function StatCard({ icon: Icon, label, value, accent = "text-brand-ink" }) {
-  return (
-    <div className="card-pv p-4">
-      <div className="flex items-center justify-between mb-1"><span className="text-xs text-brand-muted">{label}</span><Icon size={16} className={accent} /></div>
-      <div className={`font-display font-black text-3xl ${accent}`}>{value}</div>
-    </div>
-  );
-}
-
-function FilterChip({ label, active, onClick, count, testid }) {
-  return (
-    <button onClick={onClick} className={`px-3.5 py-1.5 rounded-full text-sm font-display font-bold capitalize transition-all border ${active ? "bg-brand-primary text-white border-brand-primary" : "bg-white text-brand-ink border-brand-border hover:bg-brand-sage/40"}`} data-testid={testid}>
-      {label} <span className="opacity-70">({count})</span>
-    </button>
-  );
-}
-
-function DetailRow({ label, children }) {
-  return (
-    <div>
-      <div className="text-xs font-display font-bold text-brand-muted uppercase tracking-wider mb-1">{label}</div>
-      <div className="text-brand-ink">{children}</div>
-    </div>
-  );
-}
-
-function Input({ label, value, onChange, testid, placeholder = "" }) {
-  return (
-    <label className="block">
-      <span className="block text-sm font-display font-bold text-brand-ink mb-1.5">{label}</span>
-      <input value={value ?? ""} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} className="w-full p-3 px-4 bg-brand-bg border-2 border-brand-border rounded-2xl outline-none focus:border-brand-primary focus:bg-white" data-testid={testid} />
-    </label>
   );
 }

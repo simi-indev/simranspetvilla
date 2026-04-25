@@ -13,6 +13,13 @@ const GALLERY = [
   "https://images.pexels.com/photos/32186519/pexels-photo-32186519.jpeg",
 ];
 
+const FALLBACK_BREAKDOWN_PCT = { 5: 92, 4: 8, 3: 0, 2: 0, 1: 0 };
+
+function computeBreakdownPct(star, count, total) {
+  if (total > 0) return (count / total) * 100;
+  return FALLBACK_BREAKDOWN_PCT[star] ?? 0;
+}
+
 export default function ReviewsPage() {
   const { info } = useBusinessInfo();
   const [reviews, setReviews] = React.useState([]);
@@ -47,7 +54,7 @@ export default function ReviewsPage() {
               <h3 className="font-display font-bold mb-4">Rating breakdown</h3>
               {[5, 4, 3, 2, 1].map((star) => {
                 const count = breakdown[star] || 0;
-                const pct = reviews.length > 0 ? (count / reviews.length) * 100 : (star === 5 ? 92 : star === 4 ? 8 : 0);
+                const pct = computeBreakdownPct(star, count, reviews.length);
                 return (
                   <div key={star} className="flex items-center gap-3 mb-2">
                     <div className="w-12 text-sm text-brand-ink">{star}★</div>
@@ -71,7 +78,7 @@ export default function ReviewsPage() {
               <div key={r.id} className="card-pv relative" data-testid={`review-${r.id}`}>
                 <Quote size={28} className="text-brand-secondary opacity-30 mb-3" />
                 <div className="flex items-center gap-1 mb-3">
-                  {[...Array(r.rating)].map((_, i) => <Star key={i} size={14} className="text-yellow-500" fill="currentColor" />)}
+                  {[...Array(r.rating)].map((_, i) => <Star key={`${r.id}-star-${i}`} size={14} className="text-yellow-500" fill="currentColor" />)}
                 </div>
                 <p className="text-brand-ink leading-relaxed mb-5">"{r.text}"</p>
                 <div className="border-t border-brand-border pt-4">

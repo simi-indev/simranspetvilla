@@ -9,15 +9,17 @@ export const api = axios.create({
 });
 
 export function setAdminToken(token) {
+  // sessionStorage is cleared on tab close — narrower attack surface than localStorage.
+  // For full XSS protection (httpOnly cookies) see PRD backlog: production hardening.
   if (token) {
-    localStorage.setItem("pv_admin_token", token);
+    sessionStorage.setItem("pv_admin_token", token);
   } else {
-    localStorage.removeItem("pv_admin_token");
+    sessionStorage.removeItem("pv_admin_token");
   }
 }
 
 export function getAdminToken() {
-  return localStorage.getItem("pv_admin_token");
+  return sessionStorage.getItem("pv_admin_token");
 }
 
 export function adminHeaders() {

@@ -97,7 +97,7 @@ class TestReviews:
         for rv in data:
             assert "name" in rv and "rating" in rv and "text" in rv
             assert rv["rating"] >= 4
-            assert rv.get("visible", True) == True  # noqa: E712
+            assert rv.get("visible", True)
 
 
 # ---------------- Business Info (public) ----------------
@@ -205,7 +205,7 @@ class TestContact:
         d = r.json()
         assert "id" in d
         assert d["name"] == "TEST_Contact"
-        assert d["handled"] == False  # noqa: E712
+        assert not d["handled"]
 
 
 # ---------------- Admin auth ----------------
@@ -356,7 +356,7 @@ class TestAdminReviewsCRUD:
                 json={"visible": True, "text": "TEST_Edited"},
             )
             assert r.status_code == 200
-            assert r.json()["visible"] == True  # noqa: E712
+            assert r.json()["visible"]
             assert r.json()["text"] == "TEST_Edited"
 
             # Now appears in public list

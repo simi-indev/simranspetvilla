@@ -138,7 +138,7 @@ export default function HomePage() {
               <div key={r.id} className="card-pv relative" data-testid={`testimonial-${r.id}`}>
                 <Quote size={28} className="text-brand-secondary opacity-30 mb-3" />
                 <div className="flex items-center gap-1 mb-3">
-                  {[...Array(r.rating)].map((_, i) => <Star key={i} size={14} className="text-yellow-500" fill="currentColor" />)}
+                  {[...Array(r.rating)].map((_, i) => <Star key={`${r.id}-star-${i}`} size={14} className="text-yellow-500" fill="currentColor" />)}
                 </div>
                 <p className="text-brand-ink leading-relaxed mb-5">"{r.text}"</p>
                 <div className="border-t border-brand-border pt-4">

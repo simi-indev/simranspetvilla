@@ -6,6 +6,18 @@ import { useBusinessInfo, buildWhatsAppLink } from "../lib/businessInfo";
 import { Check, ArrowLeft, ArrowRight, Calendar, MessageCircle, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
 
+const stepPillClass = (i, step) => {
+  if (i < step) return "bg-brand-sage text-brand-primary";
+  if (i === step) return "bg-brand-primary text-white";
+  return "bg-brand-bg text-brand-muted";
+};
+
+const stepBadgeClass = (i, step) => {
+  if (i < step) return "bg-brand-primary text-white";
+  if (i === step) return "bg-white text-brand-primary";
+  return "bg-brand-border text-brand-muted";
+};
+
 const STEPS = ["Service", "Pet", "Dates", "Owner", "Review", "Done"];
 
 export default function BookingPage() {
@@ -80,8 +92,8 @@ export default function BookingPage() {
         {/* Progress */}
         <div className="card-pv mb-6 flex flex-wrap gap-2" data-testid="booking-progress">
           {STEPS.slice(0, 5).map((label, i) => (
-            <div key={label} className={`flex items-center gap-2 text-xs md:text-sm font-display font-bold px-3 py-2 rounded-full transition-colors ${i < step ? "bg-brand-sage text-brand-primary" : i === step ? "bg-brand-primary text-white" : "bg-brand-bg text-brand-muted"}`}>
-              <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] ${i < step ? "bg-brand-primary text-white" : i === step ? "bg-white text-brand-primary" : "bg-brand-border text-brand-muted"}`}>
+            <div key={label} className={`flex items-center gap-2 text-xs md:text-sm font-display font-bold px-3 py-2 rounded-full transition-colors ${stepPillClass(i, step)}`}>
+              <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] ${stepBadgeClass(i, step)}`}>
                 {i < step ? <Check size={12} strokeWidth={3} /> : i + 1}
               </span>
               {label}
