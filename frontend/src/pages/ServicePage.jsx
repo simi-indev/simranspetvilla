@@ -62,7 +62,7 @@ export default function ServicePage() {
             </div>
           </div>
           <div className="aspect-[4/3] rounded-3xl overflow-hidden shadow-hover">
-            <img src={service.image} alt={service.name} className="w-full h-full object-cover" />
+            <img src={service.image} alt={service.name} className="w-full h-full object-cover" loading="lazy" />
           </div>
         </div>
       </section>

@@ -97,7 +97,7 @@ export default function ReviewsPage() {
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
             {GALLERY.map((src) => (
               <div key={src} className="overflow-hidden rounded-3xl aspect-square">
-                <img src={src} alt="" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                <img src={src} alt="" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" loading="lazy" />
               </div>
             ))}
           </div>

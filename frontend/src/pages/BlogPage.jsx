@@ -26,7 +26,7 @@ export default function BlogPage() {
           <Link to={`/blog/${featured.slug}`} className="block mb-12 group" data-testid={`blog-featured-${featured.slug}`}>
             <div className="grid md:grid-cols-2 gap-6 md:gap-10 items-center bg-white border border-brand-border rounded-3xl overflow-hidden shadow-soft hover:shadow-hover transition-all">
               <div className="aspect-[4/3] overflow-hidden">
-                <img src={featured.image} alt={featured.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <img src={featured.image} alt={featured.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
               </div>
               <div className="p-6 md:p-10">
                 <span className="trust-badge mb-3">Featured</span>
@@ -46,7 +46,7 @@ export default function BlogPage() {
           {rest.map((b) => (
             <Link key={b.slug} to={`/blog/${b.slug}`} className="card-pv group p-0 overflow-hidden block" data-testid={`blog-card-${b.slug}`}>
               <div className="aspect-[16/10] overflow-hidden">
-                <img src={b.image} alt={b.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <img src={b.image} alt={b.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
               </div>
               <div className="p-5">
                 <h3 className="font-display font-extrabold text-lg text-brand-ink leading-tight group-hover:text-brand-primary transition-colors">{b.title}</h3>

@@ -41,7 +41,7 @@ export default function BlogPostPage() {
           <span className="flex items-center gap-1.5"><Clock size={14} /> {post.read_time}</span>
         </div>
         <div className="aspect-[16/9] rounded-3xl overflow-hidden mt-8 shadow-soft">
-          <img src={post.image} alt={post.title} className="w-full h-full object-cover" />
+          <img src={post.image} alt={post.title} className="w-full h-full object-cover" loading="lazy" />
         </div>
         <div className="mt-8" data-testid="blog-content">
           <p className="text-xl text-brand-muted leading-relaxed font-display italic mb-6 border-l-4 border-brand-primary pl-5">{post.excerpt}</p>
