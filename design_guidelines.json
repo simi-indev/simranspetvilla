@@ -1,0 +1,68 @@
+{
+  "theme": "Light",
+  "archetype": "Archetype 1: Organic & Earthy",
+  "brand_vibe": "Warm, cozy, trustworthy, non-clinical, hand-crafted feel. A beloved neighborhood pet home.",
+  "colors": {
+    "primary": "#1B7B8A",
+    "primary_hover": "#15636F",
+    "secondary": "#E8821A",
+    "background": "#FAFAF8",
+    "surface": "#FFFFFF",
+    "text_primary": "#111111",
+    "text_secondary": "#555555",
+    "border": "#E0E0D0",
+    "accent_sage": "#E9F2F0",
+    "accent_peach": "#FCEADE"
+  },
+  "typography": {
+    "display_font": "Nunito",
+    "body_font": "Inter",
+    "h1": "text-4xl md:text-[48px] font-extrabold tracking-tight leading-tight",
+    "h2": "text-[32px] font-bold tracking-tight leading-snug",
+    "h3": "text-[24px] font-bold tracking-tight",
+    "body": "text-[16px] leading-relaxed text-[#555555]",
+    "small": "text-[14px] leading-normal"
+  },
+  "spacing_and_layout": {
+    "section_padding": "py-16 md:py-24",
+    "container": "max-w-7xl mx-auto px-4 md:px-8",
+    "border_radius": {
+      "card": "rounded-[24px]",
+      "button": "rounded-full",
+      "image": "rounded-[24px]"
+    },
+    "shadows": {
+      "soft": "shadow-[0_8px_30px_rgba(27,123,138,0.08)]",
+      "hover": "shadow-[0_16px_40px_rgba(27,123,138,0.12)]"
+    }
+  },
+  "components": {
+    "button_primary": "bg-[#1B7B8A] text-white hover:bg-[#15636F] transition-all rounded-full px-8 py-3 font-semibold",
+    "button_secondary": "bg-[#E8821A] text-white hover:bg-[#C96E14] transition-all rounded-full px-8 py-3 font-semibold",
+    "card": "bg-[#FFFFFF] border border-[#E0E0D0] rounded-[24px] p-6 hover:shadow-[0_16px_40px_rgba(27,123,138,0.12)] transition-all duration-300",
+    "trust_badge": "flex items-center gap-2 bg-[#E9F2F0] text-[#1B7B8A] px-4 py-2 rounded-full text-sm font-semibold",
+    "whatsapp_float": "fixed bottom-6 right-6 bg-[#25D366] text-white p-4 rounded-full shadow-lg hover:scale-110 transition-transform z-50",
+    "mobile_bottom_bar": "fixed bottom-0 left-0 w-full bg-white border-t border-[#E0E0D0] p-4 flex gap-4 z-40 md:hidden"
+  },
+  "motion": {
+    "hover": "transition-all duration-300 ease-out",
+    "page_load": "framer-motion initial opacity-0 translate-y-4 animate to opacity-100 translate-y-0 stagger 0.1s"
+  },
+  "image_urls": {
+    "hero": "https://images.unsplash.com/photo-1534361960057-19889db9621e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwxfHxoYXBweSUyMGRvZ3xlbnwwfHx8fDE3NzcwOTk3ODR8MA&ixlib=rb-4.1.0&q=85",
+    "service_boarding": "https://images.unsplash.com/photo-1601880348117-25c1127a95df?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NjZ8MHwxfHNlYXJjaHwxfHxkb2clMjBzbGVlcHxlbnwwfHx8fDE3NzcwOTk3ODR8MA&ixlib=rb-4.1.0&q=85",
+    "service_daycare": "https://images.pexels.com/photos/13923477/pexels-photo-13923477.jpeg",
+    "service_grooming": "https://images.pexels.com/photos/6131576/pexels-photo-6131576.jpeg",
+    "service_food": "https://images.pexels.com/photos/8434635/pexels-photo-8434635.jpeg",
+    "service_sitting": "https://images.pexels.com/photos/35133324/pexels-photo-35133324.jpeg",
+    "service_training": "https://images.pexels.com/photos/32186519/pexels-photo-32186519.jpeg"
+  },
+  "instructions_to_main_agent": [
+    "Use pure HTML and Tailwind for marketing pages; use Shadcn strictly for dashboard and booking flows.",
+    "Implement mobile-first design with the bottom sticky bar for booking/WhatsApp on screens < 768px.",
+    "Do NOT use standard default Shadcn cards for marketing. Use the highly rounded, soft-shadow card design specified.",
+    "Inject the Nunito font for all headings to establish a friendly, approachable brand identity.",
+    "Ensure the layout feels asymmetrical and organic, avoiding clinical, perfectly rigid grid walls where possible.",
+    "All interactive elements MUST have a data-testid attribute in kebab-case."
+  ]
+}
