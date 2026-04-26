@@ -1,0 +1,33 @@
+"""
+App configuration — env vars, DB connection, constants.
+Single source of truth for all config values.
+"""
+import os
+from pathlib import Path
+from dotenv import load_dotenv
+from motor.motor_asyncio import AsyncIOMotorClient
+
+ROOT_DIR = Path(__file__).parent
+load_dotenv(ROOT_DIR / ".env")
+
+# ── MongoDB ──
+MONGO_URL = os.environ["MONGO_URL"]
+DB_NAME = os.environ["DB_NAME"]
+client = AsyncIOMotorClient(MONGO_URL)
+db = client[DB_NAME]
+
+# ── Admin auth ──
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "petvilla2026")
+ADMIN_TOKEN = os.environ.get("ADMIN_TOKEN", "pv-admin-secret-token-2026")
+
+# ── Google Places (optional — degrades gracefully) ──
+GOOGLE_PLACE_ID = os.environ.get("GOOGLE_PLACE_ID")
+GOOGLE_PLACES_API_KEY = os.environ.get("GOOGLE_PLACES_API_KEY")
+
+# ── File uploads ──
+STATIC_DIR = ROOT_DIR / "static"
+STATIC_DIR.mkdir(parents=True, exist_ok=True)
+UPLOAD_DIR = STATIC_DIR / "uploads"
+UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+ALLOWED_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp", ".gif"}
+MAX_FILE_SIZE = 10 * 1024 * 1024  # 10MB

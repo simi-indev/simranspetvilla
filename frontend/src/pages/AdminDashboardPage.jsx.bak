@@ -2,14 +2,10 @@ import React from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { api, adminHeaders, setAdminToken, getAdminToken } from "../lib/api";
 import { useBusinessInfo } from "../lib/businessInfo";
-import { LogOut, Download, RefreshCw, PawPrint, Calendar, CheckCircle, XCircle, Clock, Phone, Mail, MapPin, MessageSquare, Star, Image, FileText, Home, Settings, RefreshCcw } from "lucide-react";
+import { LogOut, Download, RefreshCw, PawPrint, Calendar, CheckCircle, XCircle, Clock, Phone, Mail, MapPin, MessageSquare, Star } from "lucide-react";
 import { toast } from "sonner";
 import ReviewsTab from "../components/admin/ReviewsTab";
 import BusinessInfoTab from "../components/admin/BusinessInfoTab";
-import ServicesTab from "../components/admin/ServicesTab";
-import HomepageTab from "../components/admin/HomepageTab";
-import MediaTab from "../components/admin/MediaTab";
-import BlogTab from "../components/admin/BlogTab";
 import { StatCard, FilterChip, DetailRow } from "../components/admin/AdminUI";
 
 const STATUS_OPTIONS = ["new", "confirmed", "completed", "cancelled"];
@@ -19,17 +15,6 @@ const STATUS_COLORS = {
   completed: "bg-emerald-50 text-emerald-700 border-emerald-200",
   cancelled: "bg-red-50 text-red-700 border-red-200",
 };
-
-const TABS = [
-  { id: "bookings", label: "Bookings", icon: Calendar },
-  { id: "contacts", label: "Leads", icon: MessageSquare },
-  { id: "reviews", label: "Reviews", icon: Star },
-  { id: "services", label: "Services", icon: Settings },
-  { id: "homepage", label: "Homepage", icon: Home },
-  { id: "media", label: "Media", icon: Image },
-  { id: "blog", label: "Blog", icon: FileText },
-  { id: "business", label: "Business Info", icon: Settings },
-];
 
 export default function AdminDashboardPage() {
   const navigate = useNavigate();
@@ -43,11 +28,11 @@ export default function AdminDashboardPage() {
   const [tab, setTab] = React.useState("bookings");
   const [selected, setSelected] = React.useState(null);
   const [loading, setLoading] = React.useState(true);
-  const [syncingGoogle, setSyncingGoogle] = React.useState(false);
 
   React.useEffect(() => {
     if (!getAdminToken()) { navigate("/admin"); return; }
     loadAll();
+    // loadAll is a stable function defined below; safe to omit
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate]);
 
@@ -74,25 +59,11 @@ export default function AdminDashboardPage() {
       toast.success(`Booking marked ${status}`);
       loadAll();
       if (selected?.id === id) setSelected({ ...selected, status });
-    } catch { toast.error("Failed to update"); }
-  };
-
-  const syncGoogleReviews = async () => {
-    setSyncingGoogle(true);
-    try {
-      const res = await api.post("/admin/sync-google-reviews", {}, { headers: adminHeaders() });
-      if (!res.data.configured) {
-        toast.info("Google Places API not configured yet — check the setup instructions below.", { duration: 6000 });
-        console.log(res.data.setup_instructions);
-      } else {
-        toast.success(`Synced ${res.data.synced} reviews · ${res.data.new} new (pending approval)`);
-        loadAll();
-      }
-    } catch { toast.error("Sync failed"); }
-    finally { setSyncingGoogle(false); }
+    } catch (e) { toast.error("Failed to update"); }
   };
 
   const logout = () => { setAdminToken(null); navigate("/admin"); };
+
   const filteredBookings = filter === "all" ? bookings : bookings.filter((b) => b.status === filter);
 
   const exportCsv = () => {
@@ -145,22 +116,17 @@ export default function AdminDashboardPage() {
           </div>
         )}
 
-        {/* Tabs */}
         <div className="flex flex-wrap items-center gap-1 mb-6 bg-white border border-brand-border rounded-2xl p-1 w-fit" data-testid="admin-tabs">
-          {TABS.map((t) => (
-            <button
-              key={t.id}
-              onClick={() => setTab(t.id)}
-              className={`px-4 py-2 rounded-xl font-display font-bold text-sm flex items-center gap-1.5 ${tab === t.id ? "bg-brand-primary text-white" : "text-brand-ink hover:bg-brand-sage/40"}`}
-              data-testid={`tab-${t.id}`}
-            >
-              <t.icon size={14} />
-              {t.label}
-            </button>
+          {[
+            { id: "bookings", label: "Bookings" },
+            { id: "contacts", label: "Contact Leads" },
+            { id: "reviews", label: "Reviews" },
+            { id: "business", label: "Business Info" },
+          ].map((t) => (
+            <button key={t.id} onClick={() => setTab(t.id)} className={`px-4 py-2 rounded-xl font-display font-bold text-sm ${tab === t.id ? "bg-brand-primary text-white" : "text-brand-ink hover:bg-brand-sage/40"}`} data-testid={`tab-${t.id}`}>{t.label}</button>
           ))}
         </div>
 
-        {/* Bookings Tab */}
         {tab === "bookings" && (
           <>
             <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
@@ -172,15 +138,21 @@ export default function AdminDashboardPage() {
                 <Download size={14} /> Export CSV
               </button>
             </div>
-            {loading ? (
-              <div className="card-pv text-center text-brand-muted">Loading bookings…</div>
-            ) : filteredBookings.length === 0 ? (
-              <div className="card-pv text-center text-brand-muted py-12" data-testid="no-bookings">
-                <PawPrint size={32} className="mx-auto mb-3 opacity-50" />
-                No bookings yet.
-              </div>
-            ) : (
-              <div className="bg-white border border-brand-border rounded-3xl overflow-hidden" data-testid="bookings-table-wrap">
+
+            {(() => {
+              if (loading) {
+                return <div className="card-pv text-center text-brand-muted">Loading bookings…</div>;
+              }
+              if (filteredBookings.length === 0) {
+                return (
+                  <div className="card-pv text-center text-brand-muted py-12" data-testid="no-bookings">
+                    <PawPrint size={32} className="mx-auto mb-3 opacity-50" />
+                    No bookings yet. They'll appear here as soon as customers book on the website.
+                  </div>
+                );
+              }
+              return (
+                <div className="bg-white border border-brand-border rounded-3xl overflow-hidden" data-testid="bookings-table-wrap">
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm" data-testid="bookings-table">
                     <thead className="bg-brand-bg border-b border-brand-border text-brand-muted text-xs uppercase tracking-wider">
@@ -207,16 +179,18 @@ export default function AdminDashboardPage() {
                     </tbody>
                   </table>
                 </div>
-              </div>
-            )}
+                </div>
+              );
+            })()}
           </>
         )}
 
-        {/* Contacts Tab */}
         {tab === "contacts" && (
           <div className="space-y-3" data-testid="contacts-list">
             {contacts.length === 0 ? (
-              <div className="card-pv text-center text-brand-muted py-12"><MessageSquare size={32} className="mx-auto mb-3 opacity-50" />No contact submissions yet.</div>
+              <div className="card-pv text-center text-brand-muted py-12" data-testid="no-contacts">
+                <MessageSquare size={32} className="mx-auto mb-3 opacity-50" />No contact form submissions yet.
+              </div>
             ) : contacts.map((c) => (
               <div key={c.id} className="card-pv" data-testid={`contact-row-${c.id}`}>
                 <div className="flex items-start justify-between flex-wrap gap-2">
@@ -229,36 +203,10 @@ export default function AdminDashboardPage() {
           </div>
         )}
 
-        {/* Reviews Tab */}
-        {tab === "reviews" && (
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <div />
-              <button
-                onClick={syncGoogleReviews}
-                disabled={syncingGoogle}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-brand-secondary text-white rounded-full text-sm font-display font-bold hover:bg-[#C96E14] transition-all disabled:opacity-60"
-                data-testid="sync-google-reviews"
-              >
-                <RefreshCcw size={14} className={syncingGoogle ? "animate-spin" : ""} />
-                {syncingGoogle ? "Syncing…" : "Sync from Google"}
-              </button>
-            </div>
-            <ReviewsTab reviews={reviews} reload={loadAll} />
-          </div>
-        )}
-
-        {/* New CMS Tabs */}
-        {tab === "services" && <ServicesTab reload={loadAll} />}
-        {tab === "homepage" && <HomepageTab reload={loadAll} />}
-        {tab === "media" && <MediaTab />}
-        {tab === "blog" && <BlogTab />}
-        {tab === "business" && businessInfo && (
-          <BusinessInfoTab info={businessInfo} reload={() => { loadAll(); refreshBusinessInfo(); }} />
-        )}
+        {tab === "reviews" && <ReviewsTab reviews={reviews} reload={loadAll} />}
+        {tab === "business" && businessInfo && <BusinessInfoTab info={businessInfo} reload={() => { loadAll(); refreshBusinessInfo(); }} />}
       </div>
 
-      {/* Booking Detail Drawer */}
       {selected && (
         <div className="fixed inset-0 z-30 flex" data-testid="booking-detail-drawer">
           <div className="flex-1 bg-black/40" onClick={() => setSelected(null)} />
