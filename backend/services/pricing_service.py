@@ -47,35 +47,42 @@ PROTEINS = [
 # ─── HELPERS ───
 
 def get_price_key(species: str, size: Optional[str]) -> str:
-    """Mirrors JS priceKey."""
-    if species == "Dog":
-        return f"dog-{size or 'medium'}"
-    return species.lower()
+    """Mirrors JS priceKey. Robust against case and whitespace."""
+    s = str(species).strip().title()
+    if s == "Dog":
+        return f"dog-{str(size).strip().lower() if size else 'medium'}"
+    return s.lower()
 
 def is_service_available(slug: str, species: str) -> bool:
-    """Mirrors JS isServiceAvailable."""
-    if slug == "pet-food-delivery":
-        return species in ["Dog", "Cat"]
-    if slug == "pet-training":
-        return species == "Dog"
-    if slug == "home-grooming":
-        return species in ["Dog", "Cat"]
-    if slug == "pet-sitting":
+    """Mirrors JS isServiceAvailable. Robust against case and whitespace."""
+    sl = str(slug).strip().lower()
+    sp = str(species).strip().title()
+    
+    if sl == "pet-food-delivery":
+        return sp in ["Dog", "Cat"]
+    if sl == "pet-training":
+        return sp == "Dog"
+    if sl == "home-grooming":
+        return sp in ["Dog", "Cat"]
+    if sl == "pet-sitting":
         return True
     
-    table = PRICING.get(slug)
+    table = PRICING.get(sl)
     if not table:
         return False
     
-    key = get_price_key(species, "medium")
+    key = get_price_key(sp, "medium")
     return key in table
 
 def get_service_price(slug: str, species: str, size: Optional[str]) -> int:
-    """Mirrors JS getServicePrice."""
-    table = PRICING.get(slug)
-    if not table or slug in ["pet-food-delivery", "pet-sitting"]:
+    """Mirrors JS getServicePrice. Robust against case and whitespace."""
+    sl = str(slug).strip().lower()
+    sp = str(species).strip().title()
+    
+    table = PRICING.get(sl)
+    if not table or sl in ["pet-food-delivery", "pet-sitting"]:
         return 0
-    key = get_price_key(species, size)
+    key = get_price_key(sp, size)
     return table.get(key, 0)
 
 def diff_days(start_str: str, end_str: str) -> int:
@@ -132,10 +139,11 @@ def calculate_quote(
         size = pet.get("size", "medium")
 
         for slug in selected_slugs:
-            if not is_service_available(slug, species):
+            sl = str(slug).strip().lower()
+            if not is_service_available(sl, species):
                 continue
 
-            if slug == "pet-food-delivery":
+            if sl == "pet-food-delivery":
                 protein = options.get("foodProtein", "chicken")
                 pp = next((p for p in PROTEINS if p["value"] == protein), PROTEINS[1])
                 meals_per_day = dates.get("mealsPerDay") or options.get("mealsPerDay") or 2
@@ -144,7 +152,7 @@ def calculate_quote(
                 lines.append({"label": f"{name} — Food Delivery ({pp['label']}, {meals_per_day}x/day, {days} days)", "amount": cost})
                 subtotal += cost
 
-            elif slug == "pet-daycare":
+            elif sl == "pet-daycare":
                 hours = dates.get("daycareHours") or 4
                 days = dates.get("daycareDays") or 1
                 boarding_rate = PRICING["pet-boarding"].get(get_price_key(species, size), 600)
@@ -156,15 +164,15 @@ def calculate_quote(
                 lines.append({"label": label, "amount": cost})
                 subtotal += cost
 
-            elif slug == "pet-boarding":
+            elif sl == "pet-boarding":
                 nights = diff_days(dates.get("startDate"), dates.get("endDate"))
-                rate = get_service_price(slug, species, size)
+                rate = get_service_price(sl, species, size)
                 cost = rate * nights
                 label = f"{name} — Boarding (₹{rate} x {nights} night{'s' if nights > 1 else ''})"
                 lines.append({"label": label, "amount": cost})
                 subtotal += cost
 
-            elif slug == "pet-sitting":
+            elif sl == "pet-sitting":
                 mode = dates.get("sittingMode", "hourly")
                 hours = dates.get("sittingHours") or 3
                 if mode == "multiday":
@@ -188,16 +196,16 @@ def calculate_quote(
                 lines.append({"label": label, "amount": cost})
                 subtotal += cost
 
-            elif slug == "pet-training":
+            elif sl == "pet-training":
                 sessions = dates.get("trainingSessions") or 1
-                rate = get_service_price(slug, species, size)
+                rate = get_service_price(sl, species, size)
                 cost = rate * sessions
                 lines.append({"label": f"{name} — Training ({sessions} session{'s' if sessions > 1 else ''})", "amount": cost})
                 subtotal += cost
 
             else:
-                rate = get_service_price(slug, species, size)
-                lines.append({"label": f"{name} — {slug.replace('-', ' ').title()}", "amount": rate})
+                rate = get_service_price(sl, species, size)
+                lines.append({"label": f"{name} — {sl.replace('-', ' ').title()}", "amount": rate})
                 subtotal += rate
 
     # ─── Options & Adjustments ───
@@ -229,11 +237,11 @@ def calculate_quote(
     return {
         "lines": lines,
         "subtotal": subtotal,
-        "separate_room_cost": separate_room_cost,
-        "multi_pet_discount": multi_pet_discount,
-        "admin_discount": admin_discount,
-        "after_discounts": after_discounts,
-        "full_pay_discount": full_pay_discount,
+        "separateRoomCost": separate_room_cost,
+        "multiPetDiscount": multi_pet_discount,
+        "adminDiscount": admin_discount,
+        "afterDiscounts": after_discounts,
+        "fullPayDiscount": full_pay_discount,
         "pay50": pay50,
         "pay100": pay100
     }

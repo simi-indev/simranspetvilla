@@ -7,6 +7,7 @@ from models import Booking, BookingCreate, Contact, ContactCreate
 from data.defaults import DEFAULT_BUSINESS_INFO, DEFAULT_HOMEPAGE_CONTENT
 from data.services import SERVICES
 from data.blogs import BLOGS
+from services import pricing_service
 
 
 # ── Services ──
@@ -91,12 +92,27 @@ async def get_blog_by_slug(slug: str):
 async def create_booking(payload: BookingCreate) -> Booking:
     """
     Create a new booking.
-    Flow: 1. Build booking with auto-generated ID + timestamp
-          2. Save to MongoDB
-          3. Return booking object
-    Future: Add validation (valid service slugs), pricing calc, notifications
+    Flow: 1. Server-side price calculation (prevents spoofing)
+          2. Build booking with auto-generated ID + timestamp
+          3. Save to MongoDB
+          4. Return booking object
     """
-    booking = Booking(**payload.model_dump())
+    # 1. Recalculate price server-side
+    quote = pricing_service.calculate_quote(
+        selected_slugs=payload.services,
+        pets=payload.pets,
+        dates=payload.dates,
+        options=payload.options
+    )
+    
+    # 2. Determine correct price based on payment type (50% or 100%)
+    correct_price = quote["pay100"] if payload.payment_type == "100%" else quote["pay50"]
+    
+    # 3. Create booking dict and override price
+    booking_data = payload.model_dump()
+    booking_data["estimated_price"] = correct_price
+    
+    booking = Booking(**booking_data)
     await db.bookings.insert_one(booking.model_dump())
     return booking
 
