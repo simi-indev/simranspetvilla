@@ -165,3 +165,11 @@ class ServiceUpdate(BaseModel):
     includes: Optional[List[str]] = None
     faqs: Optional[List[Dict[str, str]]] = None
     image: Optional[str] = None
+
+
+# ── Quote ──
+class QuoteRequest(BaseModel):
+    selectedSlugs: List[str]
+    pets: List[Dict[str, Any]]
+    dates: Dict[str, Any]
+    options: Dict[str, Any]
