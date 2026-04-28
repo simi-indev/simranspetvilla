@@ -104,6 +104,7 @@ class BusinessInfoUpdate(BaseModel):
     instagram_url: Optional[str] = None
     facebook_url: Optional[str] = None
     founder_name: Optional[str] = None
+    about_image: Optional[str] = None
     tags: Optional[List[str]] = None
 
 
@@ -128,6 +129,7 @@ class HomepageContentUpdate(BaseModel):
     hero_cta_primary: Optional[str] = None
     hero_cta_secondary: Optional[str] = None
     hero_image: Optional[str] = None
+    gallery_images: Optional[List[str]] = None
     how_it_works: Optional[List[Dict[str, Any]]] = None
     trust_bar_items: Optional[List[str]] = None
 

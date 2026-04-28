@@ -41,6 +41,8 @@ export default function HomePage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const galleryImages = homeContent?.gallery_images || GALLERY_IMAGES;
+
   return (
     <div data-testid="home-page">
       {/* HERO */}
@@ -160,8 +162,8 @@ export default function HomePage() {
             <h2 className="font-display font-black text-[32px] md:text-5xl text-brand-ink leading-tight">A peek inside the villa.</h2>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
-            {GALLERY_IMAGES.map((src, i) => (
-              <div key={src} className={`overflow-hidden rounded-3xl ${i === 0 ? "row-span-2 col-span-2 md:col-span-1 md:row-span-2" : ""}`}>
+            {galleryImages.map((src, i) => (
+              <div key={`${src}-${i}`} className={`overflow-hidden rounded-3xl ${i === 0 ? "row-span-2 col-span-2 md:col-span-1 md:row-span-2" : ""}`}>
                 <img src={src} alt="" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" loading="lazy" />
               </div>
             ))}

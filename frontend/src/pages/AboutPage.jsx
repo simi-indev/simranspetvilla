@@ -23,7 +23,7 @@ export default function AboutPage() {
             </div>
           </div>
           <div className="rounded-3xl overflow-hidden shadow-hover aspect-[4/5]">
-            <img loading="lazy" src="https://images.unsplash.com/photo-1534361960057-19889db9621e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwxfHxoYXBweSUyMGRvZ3xlbnwwfHx8fDE3NzcwOTk3ODR8MA&ixlib=rb-4.1.0&q=85" alt="Simran with dogs" className="w-full h-full object-cover" />
+            <img loading="lazy" src={info.about_image || "https://images.unsplash.com/photo-1534361960057-19889db9621e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwxfHxoYXBweSUyMGRvZ3xlbnwwfHx8fDE3NzcwOTk3ODR8MA&ixlib=rb-4.1.0&q=85"} alt="Simran with dogs" className="w-full h-full object-cover" />
           </div>
         </div>
       </section>

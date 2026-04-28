@@ -8,6 +8,8 @@ const DEFAULT = {
   hero_subtext: "",
   hero_cta_primary: "Book a Service",
   hero_cta_secondary: "See Services",
+  hero_image: "",
+  gallery_images: [],
   how_it_works: [
     { step: 1, title: "", description: "" },
     { step: 2, title: "", description: "" },
@@ -56,6 +58,14 @@ export default function HomepageTab({ reload }) {
 
   const addTrustItem = () => setForm({ ...form, trust_bar_items: [...form.trust_bar_items, ""] });
   const removeTrustItem = (idx) => setForm({ ...form, trust_bar_items: form.trust_bar_items.filter((_, i) => i !== idx) });
+
+  const updateGalleryItem = (idx, val) => {
+    const items = [...(form.gallery_images || [])];
+    items[idx] = val;
+    setForm({ ...form, gallery_images: items });
+  };
+  const addGalleryItem = () => setForm({ ...form, gallery_images: [...(form.gallery_images || []), ""] });
+  const removeGalleryItem = (idx) => setForm({ ...form, gallery_images: (form.gallery_images || []).filter((_, i) => i !== idx) });
 
   if (loading) return <div className="card-pv text-center text-brand-muted py-12">Loading…</div>;
 
@@ -142,6 +152,46 @@ export default function HomepageTab({ reload }) {
               >
                 <Trash2 size={14} />
               </button>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Gallery Section */}
+      <div className="card-pv space-y-4">
+        <div className="flex items-center justify-between">
+          <h3 className="font-display font-black text-lg text-brand-ink">Gallery Images</h3>
+          <button
+            onClick={addGalleryItem}
+            className="flex items-center gap-1 text-sm text-brand-primary font-bold"
+            data-testid="add-gallery-item"
+          >
+            <Plus size={14} /> Add image
+          </button>
+        </div>
+        <p className="text-xs text-brand-muted">These appear in the gallery section on Home and Reviews pages. Recommend 6 images.</p>
+        <div className="grid md:grid-cols-2 gap-4">
+          {(form.gallery_images || []).map((item, idx) => (
+            <div key={idx} className="space-y-2 border border-brand-border p-3 rounded-2xl bg-brand-bg/50">
+              <div className="flex gap-2">
+                <input
+                  value={item}
+                  onChange={(e) => updateGalleryItem(idx, e.target.value)}
+                  placeholder="Image URL"
+                  className="flex-1 p-2 px-3 bg-white border border-brand-border rounded-xl outline-none focus:border-brand-primary text-sm"
+                  data-testid={`gallery-item-${idx}`}
+                />
+                <button
+                  onClick={() => removeGalleryItem(idx)}
+                  className="p-2 text-red-400 hover:bg-red-50 rounded-xl"
+                  data-testid={`remove-gallery-${idx}`}
+                >
+                  <Trash2 size={14} />
+                </button>
+              </div>
+              {item && (
+                <img src={item} alt="Preview" className="h-24 w-full object-cover rounded-lg border border-brand-border" />
+              )}
             </div>
           ))}
         </div>

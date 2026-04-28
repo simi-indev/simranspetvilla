@@ -19,6 +19,7 @@ const DEFAULT_INFO = {
   instagram_url: "https://instagram.com/simranspetvilla",
   facebook_url: "https://facebook.com/simranspetvilla",
   founder_name: "Simran Kaur Gill",
+  about_image: "https://images.unsplash.com/photo-1534361960057-19889db9621e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwxfHxoYXBweSUyMGRvZ3xlbnwwfHx8fDE3NzcwOTk3ODR8MA&ixlib=rb-4.1.0&q=85",
   tags: ["Cage-free", "Women-owned", "LGBTQ+ friendly", "24/7 care", "500+ happy pet parents"],
 };
 

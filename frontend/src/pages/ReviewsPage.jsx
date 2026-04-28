@@ -3,7 +3,7 @@ import { api } from "../lib/api";
 import { useBusinessInfo } from "../lib/businessInfo";
 import { Star, Quote } from "lucide-react";
 
-const GALLERY = [
+const GALLERY_IMAGES = [
   "https://images.unsplash.com/photo-1534361960057-19889db9621e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwxfHxoYXBweSUyMGRvZ3xlbnwwfHx8fDE3NzcwOTk3ODR8MA&ixlib=rb-4.1.0&q=85",
   "https://images.pexels.com/photos/13923477/pexels-photo-13923477.jpeg",
   "https://images.pexels.com/photos/6131576/pexels-photo-6131576.jpeg",
@@ -23,11 +23,14 @@ function computeBreakdownPct(star, count, total) {
 export default function ReviewsPage() {
   const { info } = useBusinessInfo();
   const [reviews, setReviews] = React.useState([]);
+  const [homeContent, setHomeContent] = React.useState(null);
 
   React.useEffect(() => {
-    api.get("/reviews").then((r) => setReviews(r.data)).catch(() => {});
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    api.get("/reviews").then((res) => setReviews(res.data)).catch(() => {});
+    api.get("/homepage-content").then((res) => setHomeContent(res.data)).catch(() => {});
   }, []);
+
+  const galleryImages = homeContent?.gallery_images || GALLERY_IMAGES;
 
   const breakdown = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
   reviews.forEach((r) => { breakdown[r.rating] = (breakdown[r.rating] || 0) + 1; });
@@ -95,8 +98,8 @@ export default function ReviewsPage() {
         <div className="container-pv">
           <h2 className="font-display font-black text-3xl md:text-5xl text-brand-ink mb-10">Photos from the villa</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
-            {GALLERY.map((src) => (
-              <div key={src} className="overflow-hidden rounded-3xl aspect-square">
+            {galleryImages.map((src, i) => (
+              <div key={`${src}-${i}`} className="overflow-hidden rounded-3xl aspect-square">
                 <img src={src} alt="" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" loading="lazy" />
               </div>
             ))}

@@ -8,6 +8,7 @@ const CONTACT_FIELDS = [
   { key: "name", label: "Business name", testid: "biz-name" },
   { key: "tagline", label: "Tagline", testid: "biz-tagline" },
   { key: "founder_name", label: "Founder name", testid: "biz-founder" },
+  { key: "about_image", label: "About page image URL", testid: "biz-about-image" },
   { key: "hours", label: "Hours", testid: "biz-hours" },
   { key: "rating", label: "Rating (e.g. 4.8)", testid: "biz-rating" },
   { key: "review_count", label: "Review count", testid: "biz-review-count" },

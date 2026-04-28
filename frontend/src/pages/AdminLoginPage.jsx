@@ -56,9 +56,6 @@ export default function AdminLoginPage() {
               {loading ? "Signing in…" : "Sign in"}
             </button>
           </form>
-          <div className="mt-6 text-xs text-brand-muted text-center">
-            For demo: password is <code className="bg-brand-bg px-2 py-0.5 rounded">petvilla2026</code>
-          </div>
         </div>
         <Link to="/" className="mt-4 block text-center text-sm text-brand-muted hover:text-brand-primary" data-testid="admin-back-home">← Back to website</Link>
       </div>
