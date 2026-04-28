@@ -30,6 +30,12 @@ JWT_SECRET_KEY = os.environ.get("JWT_SECRET_KEY", "pv-dev-secret-key-change-in-p
 JWT_ALGORITHM = os.environ.get("JWT_ALGORITHM", "HS256")
 JWT_ACCESS_TOKEN_EXPIRE_HOURS = 24
 
+# ── CORS ──
+CORS_ALLOWED_ORIGINS = os.environ.get(
+    "CORS_ALLOWED_ORIGINS", 
+    "http://localhost:3000,http://127.0.0.1:3000,https://simranspetvilla.com,https://www.simranspetvilla.com"
+).split(",")
+
 # ── Google Places (optional — degrades gracefully) ──
 GOOGLE_PLACE_ID = os.environ.get("GOOGLE_PLACE_ID")
 GOOGLE_PLACES_API_KEY = os.environ.get("GOOGLE_PLACES_API_KEY")

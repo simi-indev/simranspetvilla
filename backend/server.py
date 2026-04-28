@@ -16,7 +16,7 @@ from fastapi import FastAPI, APIRouter
 from starlette.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
-from config import client, STATIC_DIR
+from config import client, STATIC_DIR, CORS_ALLOWED_ORIGINS
 from seed import seed_data
 from routes import public, admin
 
@@ -36,7 +36,13 @@ app.on_event("startup")(seed_data)
 app.on_event("shutdown")(lambda: client.close())
 
 # CORS
-app.add_middleware(CORSMiddleware, allow_credentials=True, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
+app.add_middleware(
+    CORSMiddleware, 
+    allow_credentials=True, 
+    allow_origins=CORS_ALLOWED_ORIGINS, 
+    allow_methods=["*"], 
+    allow_headers=["*"]
+)
 
 # Logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
