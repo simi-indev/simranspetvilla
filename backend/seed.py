@@ -10,6 +10,9 @@ from data.blogs import BLOGS
 
 
 async def seed_data():
+    if db is None:
+        print("MongoDB unavailable, skipping seed data.")
+        return
     """Populate empty collections with default data."""
 
     if not await db.business_info.find_one({"id": "main"}):

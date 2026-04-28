@@ -11,14 +11,24 @@ ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / ".env")
 
 # ── MongoDB ──
-MONGO_URL = os.environ["MONGO_URL"]
-DB_NAME = os.environ["DB_NAME"]
-client = AsyncIOMotorClient(MONGO_URL)
-db = client[DB_NAME]
+MONGO_URL = os.environ.get("MONGO_URL")
+DB_NAME = os.environ.get("DB_NAME", "petvilla")
+
+if MONGO_URL:
+    client = AsyncIOMotorClient(MONGO_URL)
+    db = client[DB_NAME]
+else:
+    print("WARNING: MONGO_URL not found. App will run in fallback mode (read-only for most routes).")
+    client = None
+    db = None
 
 # ── Admin auth ──
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "petvilla2026")
+ADMIN_PASSWORD_HASH = os.environ.get("ADMIN_PASSWORD_HASH")
 ADMIN_TOKEN = os.environ.get("ADMIN_TOKEN", "pv-admin-secret-token-2026")
+JWT_SECRET_KEY = os.environ.get("JWT_SECRET_KEY", "pv-dev-secret-key-change-in-prod")
+JWT_ALGORITHM = os.environ.get("JWT_ALGORITHM", "HS256")
+JWT_ACCESS_TOKEN_EXPIRE_HOURS = 24
 
 # ── Google Places (optional — degrades gracefully) ──
 GOOGLE_PLACE_ID = os.environ.get("GOOGLE_PLACE_ID")

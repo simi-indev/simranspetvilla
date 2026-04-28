@@ -6,8 +6,7 @@ All business logic lives in services/admin_service.py.
 from fastapi import APIRouter, HTTPException, Depends, File, UploadFile, Form
 from typing import Optional
 
-from auth import require_admin
-from config import ADMIN_PASSWORD, ADMIN_TOKEN
+from auth import require_admin, verify_password, create_access_token
 from models import (
     AdminLogin, BookingStatusUpdate, ReviewCreate, ReviewUpdate,
     BusinessInfoUpdate, HomepageContentUpdate, ServiceUpdate,
@@ -22,10 +21,12 @@ router = APIRouter(prefix="/admin")
 
 @router.post("/login")
 async def admin_login(payload: AdminLogin):
-    # Flow: Check password → return token or 401
-    if payload.password != ADMIN_PASSWORD:
+    # Flow: Check password → return JWT or 401
+    if not verify_password(payload.password):
         raise HTTPException(status_code=401, detail="Invalid password")
-    return {"token": ADMIN_TOKEN}
+    
+    token = create_access_token()
+    return {"token": token}
 
 
 # ── Stats ──

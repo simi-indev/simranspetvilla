@@ -32,8 +32,14 @@ async def get_dashboard_stats() -> dict:
 
 # ── Bookings ──
 
-async def list_bookings(status: Optional[str] = None):
-    query = {"status": status} if status else {}
+async def list_bookings(status=None):
+    if db is None:
+        return []
+
+    query = {}
+    if status:
+        query["status"] = status
+
     return await db.bookings.find(query, {"_id": 0}).sort("created_at", -1).to_list(1000)
 
 
