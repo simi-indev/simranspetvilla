@@ -4,8 +4,8 @@ Routes are THIN: validate input → call service → return response.
 All business logic lives in services/booking_service.py.
 """
 from fastapi import APIRouter, HTTPException
-from models import BookingCreate, Booking, ContactCreate, Contact
-from services import booking_service
+from models import BookingCreate, Booking, ContactCreate, Contact, QuoteRequest
+from services import booking_service, pricing_service
 
 router = APIRouter()
 
@@ -92,6 +92,20 @@ async def get_booking(booking_id: str):
     if not booking:
         raise HTTPException(status_code=404, detail="Booking not found")
     return booking
+
+
+@router.post("/bookings/quote")
+async def get_quote(payload: QuoteRequest):
+    """
+    Calculate a live quote based on pet details and dates.
+    Used by the frontend to show pricing before booking.
+    """
+    return pricing_service.calculate_quote(
+        selected_slugs=payload.selectedSlugs,
+        pets=payload.pets,
+        dates=payload.dates,
+        options=payload.options
+    )
 
 
 # ── Contact ──

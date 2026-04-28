@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "https://orange-acorn-97w9gv5pqp95fxjx5-8000.app.github.dev";
+const BACKEND_URL = "http://localhost:8000";
 export const API = `${BACKEND_URL}/api`;
 
 export const api = axios.create({

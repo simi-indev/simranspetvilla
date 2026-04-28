@@ -61,7 +61,11 @@ class Owner(BaseModel):
 
 class BookingCreate(BaseModel):
     services: List[str]
-    pet: Pet
+    pet: Pet  # Primary pet for legacy/display
+    pets: List[Dict[str, Any]]  # Full pet list for pricing logic
+    dates: Dict[str, Any]       # Full dates object for pricing logic
+    options: Dict[str, Any]     # Full options object for pricing logic
+    payment_type: str = "50%"   # "50%" or "100%"
     start_date: str
     end_date: Optional[str] = None
     time_slot: Optional[str] = None
@@ -165,3 +169,11 @@ class ServiceUpdate(BaseModel):
     includes: Optional[List[str]] = None
     faqs: Optional[List[Dict[str, str]]] = None
     image: Optional[str] = None
+
+
+# ── Quote ──
+class QuoteRequest(BaseModel):
+    selectedSlugs: List[str]
+    pets: List[Dict[str, Any]]
+    dates: Dict[str, Any]
+    options: Dict[str, Any]
