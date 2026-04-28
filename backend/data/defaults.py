@@ -37,7 +37,7 @@ DEFAULT_HOMEPAGE_CONTENT = {
     "hero_subtext": "Boarding, grooming, daycare, training & home-cooked food — all with the warmth of a real home.",
     "hero_cta_primary": "Book a Service",
     "hero_cta_secondary": "See Services",
-    "hero_image": "",
+    "hero_image": "https://images.unsplash.com/photo-1534361960057-19889db9621e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwxfHxoYXBweSUyMGRvZ3xlbnwwfHx8fDE3NzcwOTk3ODR8MA&ixlib=rb-4.1.0&q=85",
     "how_it_works": [
         {"step": 1, "title": "Book Online", "description": "Choose your service and fill in your pet's details in minutes."},
         {"step": 2, "title": "We Confirm on WhatsApp", "description": "Simran personally confirms your booking and answers any questions."},
