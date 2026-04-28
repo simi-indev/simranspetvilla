@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { api, adminHeaders, setAdminToken, getAdminToken } from "../lib/api";
 import { useBusinessInfo } from "../lib/businessInfo";
-import { LogOut, Download, RefreshCw, PawPrint, Calendar, CheckCircle, XCircle, Clock, Phone, Mail, MapPin, MessageSquare, Star, Image, FileText, Home, Settings, RefreshCcw } from "lucide-react";
+import { LogOut, Download, RefreshCw, PawPrint, Calendar, CheckCircle, XCircle, Clock, Phone, Mail, MapPin, MessageSquare, Star, Image, FileText, Home, Settings, RefreshCcw, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import ReviewsTab from "../components/admin/ReviewsTab";
 import BusinessInfoTab from "../components/admin/BusinessInfoTab";
@@ -75,6 +75,25 @@ export default function AdminDashboardPage() {
       loadAll();
       if (selected?.id === id) setSelected({ ...selected, status });
     } catch { toast.error("Failed to update"); }
+  };
+
+  const deleteBooking = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this booking? This cannot be undone.")) return;
+    try {
+      await api.delete(`/admin/bookings/${id}`, { headers: adminHeaders() });
+      toast.success("Booking deleted");
+      loadAll();
+      if (selected?.id === id) setSelected(null);
+    } catch { toast.error("Failed to delete booking"); }
+  };
+
+  const deleteContact = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this contact lead?")) return;
+    try {
+      await api.delete(`/admin/contacts/${id}`, { headers: adminHeaders() });
+      toast.success("Lead deleted");
+      loadAll();
+    } catch { toast.error("Failed to delete lead"); }
   };
 
   const syncGoogleReviews = async () => {
@@ -218,7 +237,14 @@ export default function AdminDashboardPage() {
             {contacts.length === 0 ? (
               <div className="card-pv text-center text-brand-muted py-12"><MessageSquare size={32} className="mx-auto mb-3 opacity-50" />No contact submissions yet.</div>
             ) : contacts.map((c) => (
-              <div key={c.id} className="card-pv" data-testid={`contact-row-${c.id}`}>
+              <div key={c.id} className="card-pv group relative" data-testid={`contact-row-${c.id}`}>
+                <button 
+                  onClick={() => deleteContact(c.id)}
+                  className="absolute top-4 right-4 p-2 text-brand-muted hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all"
+                  title="Delete lead"
+                >
+                  <Trash2 size={16} />
+                </button>
                 <div className="flex items-start justify-between flex-wrap gap-2">
                   <div><div className="font-display font-bold text-brand-ink">{c.name}</div><div className="text-sm text-brand-muted">{c.phone}{c.email && ` · ${c.email}`}</div></div>
                   <div className="text-xs text-brand-muted">{new Date(c.created_at).toLocaleString()}</div>
@@ -298,12 +324,21 @@ export default function AdminDashboardPage() {
                     data-testid={`status-btn-${s}`}>{s}</button>
                 ))}
               </div>
-              {selected.owner?.phone && (
-                <a href={`https://wa.me/${selected.owner.phone.replace(/\D/g, "")}?text=${encodeURIComponent(`Hi ${selected.owner.name}! This is Simran from PetVilla. Confirming your booking for ${selected.pet?.name} on ${selected.start_date}.`)}`}
-                  target="_blank" rel="noreferrer"
-                  className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-[#25D366] text-white rounded-full text-sm font-display font-bold w-full justify-center"
-                  data-testid="whatsapp-customer"><Phone size={14} /> WhatsApp customer</a>
-              )}
+              <div className="mt-6 flex gap-2">
+                <button 
+                  onClick={() => deleteBooking(selected.id)}
+                  className="px-4 py-2 border border-red-200 text-red-600 rounded-full text-sm font-display font-bold hover:bg-red-50 transition-all"
+                  data-testid="delete-booking-btn"
+                >
+                  Delete Booking
+                </button>
+                {selected.owner?.phone && (
+                  <a href={`https://wa.me/${selected.owner.phone.replace(/\D/g, "")}?text=${encodeURIComponent(`Hi ${selected.owner.name}! This is Simran from PetVilla. Confirming your booking for ${selected.pet?.name} on ${selected.start_date}.`)}`}
+                    target="_blank" rel="noreferrer"
+                    className="flex-1 inline-flex items-center gap-2 px-4 py-2 bg-[#25D366] text-white rounded-full text-sm font-display font-bold justify-center"
+                    data-testid="whatsapp-customer"><Phone size={14} /> WhatsApp customer</a>
+                )}
+              </div>
             </div>
           </div>
         </div>

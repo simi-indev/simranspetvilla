@@ -57,10 +57,20 @@ async def update_booking_status(booking_id: str, status: str):
     return await db.bookings.find_one({"id": booking_id}, {"_id": 0}), None
 
 
+async def delete_booking(booking_id: str):
+    res = await db.bookings.delete_one({"id": booking_id})
+    return res.deleted_count > 0
+
+
 # ── Contacts ──
 
 async def list_contacts():
     return await db.contacts.find({}, {"_id": 0}).sort("created_at", -1).to_list(1000)
+
+
+async def delete_contact(contact_id: str):
+    res = await db.contacts.delete_one({"id": contact_id})
+    return res.deleted_count > 0
 
 
 # ── Business Info ──

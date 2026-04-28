@@ -56,11 +56,25 @@ async def update_booking(booking_id: str, payload: BookingStatusUpdate, _: bool 
     return result
 
 
+@router.delete("/bookings/{booking_id}")
+async def delete_booking(booking_id: str, _: bool = Depends(require_admin)):
+    if not await admin_service.delete_booking(booking_id):
+        raise HTTPException(status_code=404, detail="Booking not found")
+    return {"ok": True}
+
+
 # ── Contacts ──
 
 @router.get("/contacts")
 async def list_contacts(_: bool = Depends(require_admin)):
     return await admin_service.list_contacts()
+
+
+@router.delete("/contacts/{contact_id}")
+async def delete_contact(contact_id: str, _: bool = Depends(require_admin)):
+    if not await admin_service.delete_contact(contact_id):
+        raise HTTPException(status_code=404, detail="Contact lead not found")
+    return {"ok": True}
 
 
 # ── Business Info ──
