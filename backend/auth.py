@@ -27,7 +27,8 @@ def verify_password(plain_password: str) -> bool:
             # hash is invalid → fallback
             pass
 
-    # 2. Fallback to plaintext (dev only)
+    # 2. Fallback to plaintext (STAGED DEPLOYMENT ONLY)
+    # TODO: Remove this fallback once ADMIN_PASSWORD_HASH is configured in Render environment variables.
     if not ADMIN_PASSWORD:
         return False
 

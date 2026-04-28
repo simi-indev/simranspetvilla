@@ -136,7 +136,7 @@ async def get_blog_by_slug(slug: str):
 
 async def create_booking(payload: BookingCreate) -> Booking:
     """
-    Create a new booking.
+    Create a new booking with server-side price validation.
     """
     quote = pricing_service.calculate_quote(
         selected_slugs=payload.services,
@@ -146,6 +146,13 @@ async def create_booking(payload: BookingCreate) -> Booking:
     )
     
     correct_price = quote["pay100"] if payload.payment_type == "100%" else quote["pay50"]
+    
+    # Validation: Ensure client-provided price matches server calculation
+    if payload.estimated_price is not None:
+        if abs(payload.estimated_price - correct_price) > 1:
+            logger.warning(f"Price mismatch: Client sent {payload.estimated_price}, Server calc {correct_price}")
+            # In production we might want to block this, but for now we'll just force the correct price
+            # and log the warning.
     
     booking_data = payload.model_dump()
     booking_data["estimated_price"] = correct_price
