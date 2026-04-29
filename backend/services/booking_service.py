@@ -11,7 +11,100 @@ from data.blogs import BLOGS
 from services import pricing_service
 
 logger = logging.getLogger(__name__)
+# ── Email Notification ──
+import smtplib
+import os
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
+def send_email_notification(booking):
+    try:
+        sender = os.environ.get("NOTIFY_EMAIL")
+        password = os.environ.get("NOTIFY_EMAIL_PASSWORD")
+        if not sender or not password:
+            logger.warning("Email notification not configured")
+            return
+
+        pet_name = booking.pet.name if hasattr(booking.pet, 'name') else "Unknown"
+        owner_name = booking.owner.name if hasattr(booking.owner, 'name') else "Unknown"
+        owner_phone = booking.owner.phone if hasattr(booking.owner, 'phone') else ""
+        owner_email = booking.owner.email or "Not provided"
+        services = ", ".join(booking.services) if booking.services else ""
+        start_date = booking.start_date or ""
+        price = booking.estimated_price or 0
+        payment_type = "50% deposit" if booking.payment_type == "50%" else "Full payment (2% off)"
+
+        subject = f"🐾 New Booking — {pet_name} ({owner_name})"
+        body = f"""<!DOCTYPE html>
+<html>
+<body style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+  <div style="background: #2D6A4F; color: white; padding: 20px; border-radius: 10px 10px 0 0;">
+    <h2 style="margin:0">🐾 New Booking Alert!</h2>
+    <p style="margin:5px 0 0 0; opacity:0.85;">Simran's Pet Villa</p>
+  </div>
+  <div style="background: #f9f9f9; padding: 20px; border-radius: 0 0 10px 10px; border: 1px solid #ddd;">
+    <table style="width:100%; border-collapse: collapse;">
+      <tr style="border-bottom: 1px solid #eee;">
+        <td style="padding: 10px; font-weight: bold; color: #555; width:40%;">👤 Owner</td>
+        <td style="padding: 10px;">{owner_name}</td>
+      </tr>
+      <tr style="border-bottom: 1px solid #eee;">
+        <td style="padding: 10px; font-weight: bold; color: #555;">📞 Phone</td>
+        <td style="padding: 10px;">{owner_phone}</td>
+      </tr>
+      <tr style="border-bottom: 1px solid #eee;">
+        <td style="padding: 10px; font-weight: bold; color: #555;">📧 Email</td>
+        <td style="padding: 10px;">{owner_email}</td>
+      </tr>
+      <tr style="border-bottom: 1px solid #eee;">
+        <td style="padding: 10px; font-weight: bold; color: #555;">🐶 Pet</td>
+        <td style="padding: 10px;">{pet_name}</td>
+      </tr>
+      <tr style="border-bottom: 1px solid #eee;">
+        <td style="padding: 10px; font-weight: bold; color: #555;">🛎️ Services</td>
+        <td style="padding: 10px;">{services}</td>
+      </tr>
+      <tr style="border-bottom: 1px solid #eee;">
+        <td style="padding: 10px; font-weight: bold; color: #555;">📅 Start Date</td>
+        <td style="padding: 10px;">{start_date}</td>
+      </tr>
+      <tr style="border-bottom: 1px solid #eee;">
+        <td style="padding: 10px; font-weight: bold; color: #555;">💰 Amount</td>
+        <td style="padding: 10px;">₹{price}</td>
+      </tr>
+      <tr>
+        <td style="padding: 10px; font-weight: bold; color: #555;">💳 Payment</td>
+        <td style="padding: 10px;">{payment_type}</td>
+      </tr>
+    </table>
+    <div style="margin-top: 20px; text-align: center;">
+      <a href="https://simranspetvilla.com/admin/dashboard"
+         style="background: #2D6A4F; color: white; padding: 12px 24px;
+                border-radius: 8px; text-decoration: none; font-weight: bold;">
+        View in Dashboard →
+      </a>
+    </div>
+    <p style="margin-top: 20px; font-size: 12px; color: #999; text-align: center;">
+      Automated notification from simranspetvilla.com
+    </p>
+  </div>
+</body>
+</html>"""
+
+        msg = MIMEMultipart("alternative")
+        msg["Subject"] = subject
+        msg["From"] = f"Simran's Pet Villa <{sender}>"
+        msg["To"] = sender
+        msg["Reply-To"] = "hello@simranspetvilla.com"
+        msg.attach(MIMEText(body, "html"))
+
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+            server.login(sender, password)
+            server.sendmail(sender, sender, msg.as_string())
+
+        logger.info("Email notification sent successfully")
+    except Exception as e:
+        logger.warning(f"Email notification failed (non-critical): {e}")
 
 # ── Services ──
 
@@ -163,6 +256,7 @@ async def create_booking(payload: BookingCreate) -> Booking:
         raise Exception("Database not available")
         
     await db.bookings.insert_one(booking.model_dump())
+    send_email_notification(booking)  # 📧 Notify owner
     return booking
 
 

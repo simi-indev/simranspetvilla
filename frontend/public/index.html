@@ -8,21 +8,13 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
         <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-        <!--
-        manifest.json provides metadata used when your web app is installed on a
-        user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-        -->
-        <!--
-        Notice the use of %PUBLIC_URL% in the tags above.
-        It will be replaced with the URL of the `public` folder during the build.
-        Only files inside the `public` folder can be referenced from the HTML.
+        <link rel="canonical" href="https://simranspetvilla.com" />
 
-        Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-        work correctly both with client-side routing and a non-root public URL.
-        Learn how to configure a non-root public URL by running `npm run build`.
-        -->
         <title>Simran's PetVilla — Pune's Most Trusted Cage-Free Pet Care</title>
         <meta name="description" content="Pune's most trusted cage-free pet boarding, daycare, home grooming, and training. 4.8★ rated with 500+ happy pet parents. Open 24/7 in Lohegaon." />
+        <meta name="keywords" content="pet boarding Pune, dog boarding Pune, cat boarding Pune, pet daycare Pune, dog grooming Pune, pet hotel Pune, cage-free pet boarding Pune, pet sitting Pune, dog training Pune, Lohegaon pet care" />
+        <meta name="robots" content="index, follow" />
+        <meta name="author" content="Simran's PetVilla" />
 
         <!-- Open Graph / Facebook -->
         <meta property="og:type" content="website" />
@@ -30,6 +22,8 @@
         <meta property="og:title" content="Simran's PetVilla — Pune's Most Trusted Cage-Free Pet Care" />
         <meta property="og:description" content="Cage-free pet boarding, daycare, and grooming in Pune. 4.8★ rated, 500+ reviews. Book your pet's second home today." />
         <meta property="og:image" content="%PUBLIC_URL%/og-image.jpg" />
+        <meta property="og:site_name" content="Simran's PetVilla" />
+        <meta property="og:locale" content="en_IN" />
 
         <!-- Twitter -->
         <meta property="twitter:card" content="summary_large_image" />
@@ -38,22 +32,43 @@
         <meta property="twitter:description" content="Cage-free pet boarding, daycare, and grooming in Pune. 4.8★ rated, 500+ reviews." />
         <meta property="twitter:image" content="%PUBLIC_URL%/og-image.jpg" />
 
+        <!-- Local Business Schema (helps Google show your business info) -->
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "LocalBusiness",
+          "name": "Simran's PetVilla",
+          "description": "Cage-free pet boarding, daycare, grooming and training in Pune",
+          "url": "https://simranspetvilla.com",
+          "telephone": "+91-your-number",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Lohegaon",
+            "addressLocality": "Pune",
+            "addressRegion": "Maharashtra",
+            "postalCode": "411047",
+            "addressCountry": "IN"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": "18.5912",
+            "longitude": "73.9178"
+          },
+          "openingHours": "Mo-Su 00:00-23:59",
+          "priceRange": "₹₹",
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "reviewCount": "500"
+          }
+        }
+        </script>
+
         <script>window.addEventListener("error",function(e){if(e.error instanceof DOMException&&e.error.name==="DataCloneError"&&e.message&&e.message.includes("PerformanceServerTiming")){e.stopImmediatePropagation();e.preventDefault()}},true);</script>
     </head>
     <body>
         <noscript>You need to enable JavaScript to run this app.</noscript>
         <div id="root"></div>
-        <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
-       
         <script>
             !(function (t, e) {
                 var o, n, p, r;
@@ -118,7 +133,7 @@
             })(document, window.posthog || []);
             posthog.init("phc_xAvL2Iq4tFmANRE7kzbKwaSqp1HJjN7x48s3vr0CMjs", {
                 api_host: "https://us.i.posthog.com",
-                person_profiles: "identified_only", // or 'always' to create profiles for anonymous users as well,
+                person_profiles: "identified_only",
                 session_recording: {
                     recordCrossOriginIframes: true,
                     capturePerformance: false,

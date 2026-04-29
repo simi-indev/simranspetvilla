@@ -7,7 +7,7 @@ export default function Footer() {
   const { info } = useBusinessInfo();
   return (
     <footer className="bg-brand-ink text-white pt-16 pb-28 md:pb-12" data-testid="site-footer">
-      <div className="container-pv grid grid-cols-1 md:grid-cols-4 gap-10">
+      <div className="container-pv grid grid-cols-1 md:grid-cols-5 gap-10">
         <div>
           <div className="flex items-center gap-2.5 mb-4">
             <div className="w-10 h-10 rounded-2xl bg-brand-primary flex items-center justify-center">
@@ -50,6 +50,15 @@ export default function Footer() {
         </div>
 
         <div>
+          <h4 className="font-display font-bold mb-4">Legal</h4>
+          <ul className="space-y-2 text-sm text-white/70">
+            <li><Link to="/privacy-policy" className="hover:text-white">Privacy Policy</Link></li>
+            <li><Link to="/terms" className="hover:text-white">Terms & Conditions</Link></li>
+            <li><Link to="/refund-policy" className="hover:text-white">Refund Policy</Link></li>
+          </ul>
+        </div>
+
+        <div>
           <h4 className="font-display font-bold mb-4">Visit / Reach</h4>
           <ul className="space-y-3 text-sm text-white/70">
             <li className="flex items-start gap-2"><MapPin size={16} className="mt-0.5 shrink-0" /> {info.address}</li>
@@ -64,10 +73,14 @@ export default function Footer() {
           </ul>
         </div>
       </div>
+
       <div className="container-pv mt-12 pt-6 border-t border-white/10 flex flex-col md:flex-row md:justify-between gap-2 text-xs text-white/50">
         <div>© 2026 {info.name} · All rights reserved · Founded by {info.founder_name}</div>
         <div className="flex gap-4">
           <span>simranspetvilla.com</span>
+          <Link to="/privacy-policy" className="hover:text-white/80">Privacy</Link>
+          <Link to="/terms" className="hover:text-white/80">Terms</Link>
+          <Link to="/refund-policy" className="hover:text-white/80">Refunds</Link>
           <Link to="/admin" className="hover:text-white/80" data-testid="footer-admin-link">Owner login</Link>
         </div>
       </div>
