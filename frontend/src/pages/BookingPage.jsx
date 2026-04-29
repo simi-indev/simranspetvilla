@@ -261,7 +261,7 @@ export default function BookingPage() {
           {step === 4 && <StepReview data={data} setData={setData} quote={quote} />}
           {step === 5 && (
   <BookingPaymentStep
-    bookingFormData={formState}
+    bookingFormData={data}
     totalAmount={calculatedTotal}
     onPaymentSuccess={({ booking_id, payment_id }) => {
       console.log("Success:", booking_id, payment_id);
