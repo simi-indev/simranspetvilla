@@ -201,16 +201,22 @@ async def upload_image(filename: str, content: bytes, section: str):
     if len(content) > MAX_FILE_SIZE:
         return None, "File too large. Max 10MB."
 
-    section_dir = UPLOAD_DIR / section
-    section_dir.mkdir(parents=True, exist_ok=True)
-    unique_name = f"{uuid.uuid4().hex}{ext}"
-    (section_dir / unique_name).write_bytes(content)
+    import cloudinary.uploader
+    import io
+
+    result = cloudinary.uploader.upload(
+        io.BytesIO(content),
+        folder=f"petvilla/{section}",
+        resource_type="image"
+    )
+    url = result["secure_url"]
+    unique_name = result["public_id"].split("/")[-1]
 
     image_doc = {
         "id": str(uuid.uuid4()),
         "filename": unique_name,
         "original_name": filename,
-        "url": f"/static/uploads/{section}/{unique_name}",
+        "url": url,
         "section": section,
         "assigned_to": None,
         "featured": False,
@@ -242,9 +248,12 @@ async def delete_image(image_id: str):
     img = await db.images.find_one({"id": image_id})
     if not img:
         return False, "Image not found"
-    file_path = UPLOAD_DIR / img["section"] / img["filename"]
-    if file_path.exists():
-        file_path.unlink()
+    try:
+        import cloudinary.uploader
+        public_id = f"petvilla/{img['section']}/{img['filename']}"
+        cloudinary.uploader.destroy(public_id)
+    except Exception:
+        pass
     await db.images.delete_one({"id": image_id})
     return True, None
 
