@@ -29,3 +29,4 @@ cloudinary
 razorpay==1.4.2
 uvicorn
 setuptools
+setuptools
