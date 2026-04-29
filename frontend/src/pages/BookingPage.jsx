@@ -58,15 +58,17 @@ export default function BookingPage() {
     paymentType: "50%",
     termsAccepted: false,
   });
-  const estimatedPrice = 0;
   const [submitting, setSubmitting] = React.useState(false);
   const [bookingResult, setBookingResult] = React.useState(null);
   const [otherSpeciesDetected, setOtherSpeciesDetected] = React.useState(false);
   const [quote, setQuote] = React.useState({
-    lines: [], subtotal: 0, separateRoomCost: 0, multiPetDiscount: 0,
-    adminDiscount: 0, afterDiscounts: 0, fullPayDiscount: 0, pay50: 0, pay100: 0
-  });
-  const [loadingQuote, setLoadingQuote] = React.useState(false);
+  lines: [], subtotal: 0, separateRoomCost: 0, multiPetDiscount: 0,
+  adminDiscount: 0, afterDiscounts: 0, fullPayDiscount: 0, pay50: 0, pay100: 0
+});
+
+const estimatedPrice = quote?.subtotal || 0;
+
+const [loadingQuote, setLoadingQuote] = React.useState(false);
 
   React.useEffect(() => {
     api.get("/services").then((r) => setServices(r.data)).catch(() => {});
