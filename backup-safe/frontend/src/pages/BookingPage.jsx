@@ -13,7 +13,6 @@ import StepDates from "./Booking/StepDates";
 import StepOwner from "./Booking/StepOwner";
 import StepReview from "./Booking/StepReview";
 import StepDone from "./Booking/StepDone";
-import BookingPaymentStep from "../components/booking/BookingPaymentStep";
 
 const newPet = () => ({
   id: Date.now(),
@@ -259,18 +258,7 @@ export default function BookingPage() {
           {step === 2 && <StepDates data={data} setData={setData} selectedSlugs={data.selectedSlugs} sitterAcknowledged={sitterAcknowledged} onShowSitterPopup={() => setShowSitterPopup(true)} />}
           {step === 3 && <StepOwner owner={data.owner} setOwner={(o) => setData({ ...data, owner: o })} notes={data.notes} setNotes={(n) => setData({ ...data, notes: n })} hasSitting={hasSitting} />}
           {step === 4 && <StepReview data={data} setData={setData} quote={quote} />}
-          {step === 5 && (
-  <BookingPaymentStep
-    bookingFormData={formState}
-    totalAmount={calculatedTotal}
-    onPaymentSuccess={({ booking_id, payment_id }) => {
-      console.log("Success:", booking_id, payment_id);
-    }}
-    onPaymentFailure={(msg) => {
-      console.error("Payment failed:", msg);
-    }}
-  />
-)}
+          {step === 5 && bookingResult && <StepDone booking={bookingResult} paymentType={data.paymentType} quote={quote} />}
         </div>
 
         {/* Nav */}
