@@ -36,6 +36,9 @@ app.include_router(api)
 
 # Lifecycle
 app.on_event("startup")(seed_data)
+@app.get("/api/health")
+async def health():
+    return {"status": "ok"}
 app.on_event("shutdown")(lambda: client.close())
 
 # CORS
