@@ -58,6 +58,7 @@ export default function BookingPage() {
     paymentType: "50%",
     termsAccepted: false,
   });
+  const estimatedPrice = 0;
   const [submitting, setSubmitting] = React.useState(false);
   const [bookingResult, setBookingResult] = React.useState(null);
   const [otherSpeciesDetected, setOtherSpeciesDetected] = React.useState(false);
