@@ -262,7 +262,7 @@ export default function BookingPage() {
           {step === 5 && (
   <BookingPaymentStep
     bookingFormData={data}
-    totalAmount={calculatedTotal}
+    totalAmount={estimatedPrice}
     onPaymentSuccess={({ booking_id, payment_id }) => {
       console.log("Success:", booking_id, payment_id);
     }}
