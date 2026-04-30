@@ -34,11 +34,11 @@
         <script>
     (function(){
     var redirect = sessionStorage.getItem('redirect');
-    if (redirect) {
-         sessionStorage.removeItem('redirect');
-        window.history.replaceState(null, null, redirect);
+    if (redirect && redirect !== '/') {
+      sessionStorage.removeItem('redirect');
+      window.history.replaceState(null, null, redirect);
     }
-    })();
+     })();
     </script>
         <!-- Local Business Schema (helps Google show your business info) -->
         <script type="application/ld+json">
