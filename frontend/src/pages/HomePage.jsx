@@ -107,7 +107,7 @@ export default function HomePage() {
       <section className="section-pad" data-testid="how-it-works-section">
         <div className="container-pv">
           <div className="text-center max-w-2xl mx-auto mb-12">
-            <h2 className="font-display font-black text-[32px] md:text-5xl text-brand-ink leading-tight">Booking is stupid simple.</h2>
+            <h2 className="font-display font-black text-[32px] md:text-5xl text-brand-ink leading-tight">Booking is super simple.</h2>
             <p className="text-brand-muted mt-3 text-lg">Three steps. Done in 90 seconds.</p>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
