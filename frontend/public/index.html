@@ -31,7 +31,15 @@
         <meta property="twitter:title" content="Simran's PetVilla — Pune's Most Trusted Cage-Free Pet Care" />
         <meta property="twitter:description" content="Cage-free pet boarding, daycare, and grooming in Pune. 4.8★ rated, 500+ reviews." />
         <meta property="twitter:image" content="%PUBLIC_URL%/og-image.jpg" />
-
+        <script>
+    (function(){
+    var redirect = sessionStorage.redirect;
+    delete sessionStorage.redirect;
+    if (redirect && redirect !== location.href) {
+      history.replaceState(null, null, redirect);
+    }
+     })();
+    </script>
         <!-- Local Business Schema (helps Google show your business info) -->
         <script type="application/ld+json">
         {
