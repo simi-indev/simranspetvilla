@@ -107,8 +107,8 @@ const [loadingQuote, setLoadingQuote] = React.useState(false);
   const selectedServices = services.filter((s) => data.selectedSlugs.includes(s.slug));
   const hasSitting = data.selectedSlugs.includes("pet-sitting");
 
-  const next = () => setStep((s) => Math.min(s + 1, STEPS.length - 1));
-  const back = () => setStep((s) => Math.max(s - 1, 0));
+  const next = () => { setStep((s) => Math.min(s + 1, STEPS.length - 1)); window.scrollTo({ top: 0, behavior: "smooth" }); };
+  const back = () => { setStep((s) => Math.max(s - 1, 0)); window.scrollTo({ top: 0, behavior: "smooth" }); };
 
   const validate = () => {
     if (step === 0 && data.selectedSlugs.length === 0) {
