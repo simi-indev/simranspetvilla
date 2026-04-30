@@ -157,7 +157,7 @@ async def delete_review(review_id: str):
 # ── Blog ──
 
 async def list_all_blogs():
-    return await db.blogs.find({}, {"_id": 0}).sort("date", -1).to_list(100)
+    return await db.blogs.find({}, {"_id": 0}).sort("date", -1).to_list(1000)
 
 
 async def create_blog(data: dict):
