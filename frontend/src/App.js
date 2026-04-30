@@ -13,6 +13,9 @@ import ContactPage from "./pages/ContactPage";
 import BookingPage from "./pages/BookingPage";
 import AdminLoginPage from "./pages/AdminLoginPage";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
+import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
+import TermsPage from "./pages/TermsPage";
+import RefundPolicyPage from "./pages/RefundPolicyPage";
 import { Toaster } from "sonner";
 import { BusinessInfoProvider } from "./lib/businessInfo";
 
@@ -33,6 +36,9 @@ function App() {
             <Route path="/book" element={<BookingPage />} />
             <Route path="/admin" element={<AdminLoginPage />} />
             <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+            <Route path="/terms" element={<TermsPage />} />
+            <Route path="/refund-policy" element={<RefundPolicyPage />} />
           </Route>
         </Routes>
         <Toaster position="top-center" richColors />
@@ -42,3 +48,5 @@ function App() {
 }
 
 export default App;
+// force rebuild Thu Apr 30 08:30:02 UTC 2026
+
