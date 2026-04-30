@@ -81,7 +81,7 @@ export default function Footer() {
           <Link to="/privacy-policy" className="hover:text-white/80">Privacy</Link>
           <Link to="/terms" className="hover:text-white/80">Terms</Link>
           <Link to="/refund-policy" className="hover:text-white/80">Refunds</Link>
-          <Link to="/admin" className="hover:text-white/80" data-testid="footer-admin-link">Owner login</Link>
+          
         </div>
       </div>
     </footer>
