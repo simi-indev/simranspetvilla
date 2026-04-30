@@ -267,15 +267,24 @@ const [loadingQuote, setLoadingQuote] = React.useState(false);
     bookingFormData={data}
     totalAmount={estimatedPrice}
     onPaymentSuccess={({ booking_id, payment_id }) => {
-      console.log("Success:", booking_id, payment_id);
-    }}
+  console.log("Success:", booking_id, payment_id);
+  setStep(6); // Move to success screen
+}}
     onPaymentFailure={(msg) => {
       console.error("Payment failed:", msg);
     }}
   />
 )}
-        </div>
-
+      </div>
+      {step === 6 && (
+       <div className="text-center py-12 px-4">
+      <div className="text-6xl mb-4">🎉</div>
+      <h2 className="text-2xl font-bold text-green-600 mb-2">Booking Confirmed!</h2>
+      <p className="text-gray-600 mb-2">Your payment was successful.</p>
+      <p className="text-gray-600 mb-6">You'll receive a confirmation on WhatsApp shortly.</p>
+      <a href="/" className="btn-primary inline-block">Back to Home</a>
+      </div>
+      )}
         {/* Nav */}
         {step < 5 && (
           <div className="mt-6 flex flex-col-reverse md:flex-row md:justify-between gap-3">
