@@ -15,7 +15,7 @@ const SECTIONS = [
   { value: "service-pet-training", label: "Service: Training" },
 ];
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "https://orange-acorn-97w9gv5pqp95fxjx5-8000.app.github.dev";
+const BACKEND_URL = (import.meta.env.VITE_API_URL ?? "https://simranspetvilla-production.up.railway.app");
 
 export default function MediaTab() {
   const [images, setImages] = React.useState([]);
