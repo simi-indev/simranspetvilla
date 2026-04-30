@@ -40,7 +40,7 @@ export default function RefundPolicyPage() {
 
       <section className="mb-8">
         <h2 className="text-xl font-semibold mb-3">How to Cancel</h2>
-        <p className="text-gray-700">To cancel your booking, WhatsApp us at +91 your-number with your booking ID. Cancellations are only accepted via WhatsApp or phone call — not email.</p>
+        <p className="text-gray-700">To cancel your booking, WhatsApp us at +91 9988975056 with your booking ID. Cancellations are only accepted via WhatsApp or phone call — not email.</p>
       </section>
 
       <section className="mb-8">
@@ -55,8 +55,8 @@ export default function RefundPolicyPage() {
 
       <section className="mb-8">
         <h2 className="text-xl font-semibold mb-3">Contact for Refunds</h2>
-        <p className="text-gray-700">📞 WhatsApp: +91 your-number<br />
-        📧 Email: simranspetvilla@gmail.com</p>
+        <p className="text-gray-700">📞 WhatsApp: +91 9988975056<br />
+        📧 Email: hello@simranspetvilla.com</p>
       </section>
     </div>
   );

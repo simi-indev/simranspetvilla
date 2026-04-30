@@ -38,8 +38,8 @@ export default function TermsPage() {
 
       <section className="mb-8">
         <h2 className="text-xl font-semibold mb-3">6. Contact</h2>
-        <p className="text-gray-700">📞 WhatsApp: +91 your-number<br />
-        📧 Email: simranspetvilla@gmail.com<br />
+        <p className="text-gray-700">📞 WhatsApp: +91 9988975056<br />
+        📧 Email: hello@simranspetvilla.com<br />
         📍 Pune, Maharashtra</p>
       </section>
     </div>
