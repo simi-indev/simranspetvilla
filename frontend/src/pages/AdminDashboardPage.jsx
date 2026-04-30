@@ -227,7 +227,7 @@ export default function AdminDashboardPage() {
                           <input
                             type="checkbox"
                             checked={selectedRows.size === filteredBookings.length && filteredBookings.length > 0}
-                            onChange={(e) => setSelectedRows(e.target.checked ? new Set(filteredBookings.map((b) => b.id)) : new Set())}
+                            onChange={(e) => setSelectedRows(e.target.checked ? new Set(filteredBookings.map((b) => b.id ?? b.booking_id)) : new Set())}
                             className="rounded"
                           />
                         </th>
@@ -245,7 +245,7 @@ export default function AdminDashboardPage() {
                           <td className="p-4" onClick={(e) => e.stopPropagation()}>
                             <input
                               type="checkbox"
-                              checked={selectedRows.has(b.id)}
+                              checked={selectedRows.has(b.id ?? b.booking_id)}
                               onChange={(e) => {
                                 const next = new Set(selectedRows);
                                 e.target.checked ? next.add(b.id) : next.delete(b.id);
