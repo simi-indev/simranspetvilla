@@ -4,7 +4,7 @@
  * All amounts from the API are in INR (rupees); Razorpay amounts are in paise.
  */
 
-const API_BASE = import.meta.env.VITE_API_URL ?? "https://petvilla-api-x833.onrender.com";
+const API_BASE = import.meta.env.VITE_API_URL ?? "https://simranspetvilla-production.up.railway.app";
 
 /**
  * Ask the backend to create a Razorpay order.
