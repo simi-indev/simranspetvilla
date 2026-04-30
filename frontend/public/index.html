@@ -33,12 +33,12 @@
         <meta property="twitter:image" content="%PUBLIC_URL%/og-image.jpg" />
         <script>
     (function(){
-    var redirect = sessionStorage.redirect;
-    delete sessionStorage.redirect;
-    if (redirect && redirect !== location.href) {
-      history.replaceState(null, null, redirect);
+    var redirect = sessionStorage.getItem('redirect');
+    if (redirect) {
+         sessionStorage.removeItem('redirect');
+        window.history.replaceState(null, null, redirect);
     }
-     })();
+    })();
     </script>
         <!-- Local Business Schema (helps Google show your business info) -->
         <script type="application/ld+json">
