@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BACKEND_URL = import.meta.env.VITE_API_URL ?? "https://simranspetvilla-production.up.railway.app";
+const BACKEND_URL = process.env.REACT_APP_API_URL ?? "https://simranspetvilla-production.up.railway.app";
 export const API = `${BACKEND_URL}/api`;
 
 export const api = axios.create({
