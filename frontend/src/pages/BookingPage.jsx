@@ -44,6 +44,7 @@ export default function BookingPage() {
     pets: [newPet()],
     dates: {
       startDate: "", endDate: "", timeSlot: "",
+      checkInTime: "10:00", checkOutTime: "10:00",
       daycareHours: 4, daycareDays: 1,
       trainingSessions: 1,
       foodDays: 7, mealsPerDay: 2,

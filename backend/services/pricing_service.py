@@ -85,16 +85,21 @@ def get_service_price(slug: str, species: str, size: Optional[str]) -> int:
     key = get_price_key(sp, size)
     return table.get(key, 0)
 
-def diff_days(start_str: str, end_str: str) -> int:
-    """Mirrors JS diffDays."""
+def diff_days(start_str: str, end_str: str, start_time: str = "10:00", end_time: str = "10:00") -> int:
+    """Boarding day calculation: >5 remaining hours = extra full day."""
     if not start_str or not end_str:
         return 1
     try:
-        start = datetime.fromisoformat(start_str.replace('Z', '+00:00'))
-        end = datetime.fromisoformat(end_str.replace('Z', '+00:00'))
-        delta = end - start
-        days = math.ceil(delta.total_seconds() / 86400)
-        return max(days, 1)
+        start_dt = datetime.fromisoformat(f"{start_str}T{start_time}:00")
+        end_dt = datetime.fromisoformat(f"{end_str}T{end_time}:00")
+        total_hours = (end_dt - start_dt).total_seconds() / 3600
+        if total_hours <= 0:
+            return 1
+        full_days = math.floor(total_hours / 24)
+        remaining = total_hours % 24
+        if remaining > 5:
+            full_days += 1
+        return max(full_days, 1)
     except Exception:
         return 1
 
@@ -165,10 +170,13 @@ def calculate_quote(
                 subtotal += cost
 
             elif sl == "pet-boarding":
-                nights = diff_days(dates.get("startDate"), dates.get("endDate"))
+                nights = diff_days(
+                    dates.get("startDate"), dates.get("endDate"),
+                    dates.get("checkInTime", "10:00"), dates.get("checkOutTime", "10:00")
+                )
                 rate = get_service_price(sl, species, size)
                 cost = rate * nights
-                label = f"{name} — Boarding (₹{rate} x {nights} night{'s' if nights > 1 else ''})"
+                label = f"{name} — Boarding (₹{rate} x {nights} day{'s' if nights > 1 else ''})"
                 lines.append({"label": label, "amount": cost})
                 subtotal += cost
 
@@ -211,7 +219,10 @@ def calculate_quote(
     # ─── Options & Adjustments ───
     separate_room_cost = 0
     if options.get("separateRoom"):
-        nights = diff_days(dates.get("startDate"), dates.get("endDate"))
+        nights = diff_days(
+            dates.get("startDate"), dates.get("endDate"),
+            dates.get("checkInTime", "10:00"), dates.get("checkOutTime", "10:00")
+        )
         separate_room_cost = 100 * nights
         lines.append({"label": f"Separate room (+₹100 x {nights} night{'s' if nights > 1 else ''})", "amount": separate_room_cost})
         subtotal += separate_room_cost

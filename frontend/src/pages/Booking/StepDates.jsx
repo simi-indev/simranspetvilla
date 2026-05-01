@@ -17,26 +17,60 @@ export default function Step3({ data, setData, selectedSlugs, sitterAcknowledged
       <p className="text-brand-muted text-sm mb-6">Pick your dates and options.</p>
       <div className="space-y-5">
 
-        {(hasBoarding || (!hasSitting && !hasDaycare)) && (
-          <div className="grid md:grid-cols-2 gap-4">
-            <Inp label={hasBoarding ? "Check-in date" : "Service date"} type="date" value={d.startDate} set={(v) => setDates({ startDate: v })} tid="start-date" min={new Date().toISOString().split("T")[0]} />
-            {hasBoarding && (
-              <Inp label="Check-out date" type="date" value={d.endDate} set={(v) => setDates({ endDate: v })} tid="end-date" min={d.startDate || new Date().toISOString().split("T")[0]} />
-            )}
-            {!hasBoarding && !hasDaycare && !hasSitting && (
-              <div>
-                <span className="block text-sm font-display font-bold text-brand-ink mb-1.5">Preferred time</span>
-                <select className="input-pv" value={d.timeSlot} onChange={(e) => setDates({ timeSlot: e.target.value })} data-testid="time-slot">
-                  <option value="">Select a time</option>
-                  <option>Morning (9 AM – 12 PM)</option>
-                  <option>Afternoon (12 – 4 PM)</option>
-                  <option>Evening (4 – 8 PM)</option>
-                </select>
-              </div>
-            )}
+{(hasBoarding || (!hasSitting && !hasDaycare)) && (
+  <div className="space-y-4">
+    <div className="grid md:grid-cols-2 gap-4">
+      <div className="space-y-2">
+        <Inp label="Check-in date" type="date" value={d.startDate} set={(v) => setDates({ startDate: v })} tid="start-date" min={new Date().toISOString().split("T")[0]} />
+        {hasBoarding && (
+          <div>
+            <span className="block text-sm font-display font-bold text-brand-ink mb-1.5">Check-in time</span>
+            <select className="input-pv" value={d.checkInTime || "10:00"} onChange={(e) => setDates({ checkInTime: e.target.value })} data-testid="checkin-time">
+              {["06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00"].map(t => (
+                <option key={t} value={t}>{new Date(`2000-01-01T${t}`).toLocaleTimeString("en-IN", { hour: "numeric", minute: "2-digit", hour12: true })}</option>
+              ))}
+            </select>
           </div>
         )}
+      </div>
 
+      {hasBoarding && (
+        <div className="space-y-2">
+          <Inp label="Check-out date" type="date" value={d.endDate} set={(v) => setDates({ endDate: v })} tid="end-date" min={d.startDate || new Date().toISOString().split("T")[0]} />
+          <div>
+            <span className="block text-sm font-display font-bold text-brand-ink mb-1.5">Check-out time</span>
+            <select className="input-pv" value={d.checkOutTime || "10:00"} onChange={(e) => setDates({ checkOutTime: e.target.value })} data-testid="checkout-time">
+              {["06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00"].map(t => (
+                <option key={t} value={t}>{new Date(`2000-01-01T${t}`).toLocaleTimeString("en-IN", { hour: "numeric", minute: "2-digit", hour12: true })}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+      )}
+
+      {!hasBoarding && !hasDaycare && !hasSitting && (
+        <div>
+          <span className="block text-sm font-display font-bold text-brand-ink mb-1.5">Preferred time</span>
+          <select className="input-pv" value={d.timeSlot} onChange={(e) => setDates({ timeSlot: e.target.value })} data-testid="time-slot">
+            <option value="">Select a time</option>
+            <option>Morning (9 AM – 12 PM)</option>
+            <option>Afternoon (12 – 4 PM)</option>
+            <option>Evening (4 – 8 PM)</option>
+          </select>
+        </div>
+      )}
+    </div>
+
+    {hasBoarding && (
+      <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-xs text-amber-800 space-y-1">
+        <div className="font-bold text-sm">🕙 Check-in & Check-out Policy</div>
+        <div>• Standard check-in and check-out: <strong>10:00 AM</strong></div>
+        <div>• Stays over 5 hours are charged as a full day</div>
+        <div>• Late check-out after 11:00 AM: <strong>₹100/hr</strong> — contact us if needed</div>
+      </div>
+    )}
+  </div>
+)}
         {hasDaycare && (
           <div className="bg-brand-bg border border-brand-border rounded-2xl p-4 space-y-3">
             <h3 className="font-display font-bold text-brand-ink flex items-center gap-2">☀️ Daycare</h3>
