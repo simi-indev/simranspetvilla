@@ -7,6 +7,14 @@ import TrustBar from "../components/TrustBar";
 import FAQ from "../components/FAQ";
 import { ArrowRight, Calendar, MessageCircle, Smile, Star, MapPin, Quote } from "lucide-react";
 
+
+const optimizeImage = (url, width = 800) => {
+  if (url.includes('res.cloudinary.com')) {
+    return url.replace('/upload/', `/upload/f_auto,q_auto,w_${width}/`);
+  }
+  return url;
+};
+
 const HOME_FAQS = [
   { q: "Is the facility really cage-free?", a: "Yes. Pets stay in our home, sleep on dog beds in shared rooms, and roam freely in indoor and outdoor play areas. Maximum 8 pets at a time, all temperament-matched." },
   { q: "How do I book a service?", a: "Click 'Book a Service', fill the form with your pet and dates, and we'll confirm on WhatsApp within 30 minutes." },
@@ -70,7 +78,7 @@ export default function HomePage() {
 
           <div className="relative animate-fade-up" style={{ animationDelay: "120ms" }}>
             <div className="relative aspect-[4/5] rounded-[32px] overflow-hidden shadow-hover">
-            <img src={homeContent?.hero_image || "https://images.unsplash.com/photo-1534361960057-19889db9621e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwxfHxoYXBweSUyMGRvZ3xlbnwwfHx8fDE3NzcwOTk3ODR8MA&ixlib=rb-4.1.0&q=85"} alt="Happy dog at PetVilla" className="w-full h-full object-cover" />            </div>
+            <img src={optimizeImage(homeContent?.hero_image) || "https://images.unsplash.com/photo-1534361960057-19889db9621e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwxfHxoYXBweSUyMGRvZ3xlbnwwfHx8fDE3NzcwOTk3ODR8MA&ixlib=rb-4.1.0&q=85&w=800"} alt="Happy dog at PetVilla" className="w-full h-full object-cover" fetchpriority="high" loading="eager" width="800" height="1000" />            </div>
             <div className="hidden md:flex absolute -bottom-6 -left-6 bg-white rounded-3xl shadow-hover px-5 py-4 items-center gap-3 max-w-xs">
               <div className="w-10 h-10 rounded-full bg-brand-secondary flex items-center justify-center text-white"><Smile size={20} /></div>
               <div>
