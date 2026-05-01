@@ -102,13 +102,11 @@ export default function StepReview({ data, setData, quote }) {
             <button type="button" onClick={(e) => { e.preventDefault(); setShowTerms(true); }} className="text-brand-primary font-bold underline" data-testid="read-terms">
               Terms & Conditions
             </button>
-            , including cancellation policy, vet cost responsibility, and photo consent.
+            .
           </div>
         </label>
 
-        <p className="text-[11px] text-brand-muted text-center">
-          Cancel 48h+: full refund minus ₹100 · 24-48h: 70% refund · Under 24h: case-by-case
-        </p>
+        
       </div>
 
       {showTerms && (
