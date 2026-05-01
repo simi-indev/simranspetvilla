@@ -68,5 +68,10 @@ export const SITTING_MODES = [
 export function validatePhone(phone) {
   const cleaned = phone.replace(/[\s\-\(\)]/g, "");
   const match = cleaned.match(/^(?:\+91|91)?(\d{10})$/);
-  return match ? match[1] : null;
+  if (!match) return null;
+  const num = match[1];
+  if (!/^[6-9]/.test(num)) return null;
+  if (/^(\d)\1{9}$/.test(num)) return null;
+  if (num === "1234567890" || num === "9876543210") return null;
+  return num;
 }
