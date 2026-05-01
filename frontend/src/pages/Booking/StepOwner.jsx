@@ -24,16 +24,27 @@ export default function StepOwner({ owner, setOwner, notes, setNotes, hasSitting
         </div>
         <div className="grid md:grid-cols-2 gap-4">
           <Inp label="Email (optional)" type="email" value={owner.email} set={(v) => set({ email: v })} ph="you@example.com" tid="owner-email" />
-          <Inp label="Locality" value={owner.locality} set={(v) => set({ locality: v })} ph="Viman Nagar, Kharadi…" tid="owner-locality" />
-        </div>
-        <Inp label="Full Address (for home services / pickup)" value={owner.address} set={(v) => set({ address: v })} ph="Flat No, Society, Street" tid="owner-address" area />
-
+            <Inp
+              label={`Locality${owner.pickup_drop ? " *" : ""}`}
+              value={owner.locality}
+              set={(v) => set({ locality: v })}
+              ph="Viman Nagar, Kharadi…"
+              tid="owner-locality"
+            />        </div>
+          <Inp
+            label={`Full Address${owner.pickup_drop ? " *" : " (for home services / pickup)"}`}
+            value={owner.address}
+            set={(v) => set({ address: v })}
+            ph="Flat No, Society, Street"
+            tid="owner-address"
+            area
+          />
         {!hasSitting && (
           <label className="flex items-center gap-3 cursor-pointer p-3 bg-brand-bg rounded-xl border-2 border-brand-border" data-testid="pickup-drop">
             <input type="checkbox" className="w-5 h-5 accent-brand-primary" checked={owner.pickup_drop} onChange={(e) => set({ pickup_drop: e.target.checked })} />
             <div>
               <div className="font-display font-bold text-brand-ink">I'd like pickup & drop</div>
-              <div className="text-xs text-brand-muted">₹150–300 based on locality</div>
+              <div className="text-xs text-brand-muted">₹500–1,000 — confirmed on WhatsApp</div>
             </div>
           </label>
         )}
