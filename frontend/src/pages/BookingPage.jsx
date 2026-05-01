@@ -135,10 +135,15 @@ const [loadingQuote, setLoadingQuote] = React.useState(false);
       }
       if (hasSitting && !sitterAcknowledged) { setShowSitterPopup(true); return false; }
     }
+    
     if (step === 3) {
-      if (!data.owner.name) { toast.error("Your name is required"); return false; }
-      if (!validatePhone(data.owner.phone)) { toast.error("Enter a valid Indian mobile number (10 digits)"); return false; }
-    }
+    if (!data.owner.name) { toast.error("Your name is required"); return false; }
+    if (!validatePhone(data.owner.phone)) { toast.error("Enter a valid Indian mobile number (10 digits)"); return false; }
+    if (data.owner.pickup_drop) {
+    if (!data.owner.address?.trim()) { toast.error("Please enter your full address for pickup."); return false; }
+    if (!data.owner.locality?.trim()) { toast.error("Please enter your locality for pickup."); return false; }
+  }
+}
     return true;
   };
 
