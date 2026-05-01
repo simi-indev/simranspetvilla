@@ -9,11 +9,11 @@ import { ArrowRight, Calendar, MessageCircle, Smile, Star, MapPin, Quote } from 
 
 const HOME_FAQS = [
   { q: "Is the facility really cage-free?", a: "Yes. Pets stay in our home, sleep on dog beds in shared rooms, and roam freely in indoor and outdoor play areas. Maximum 8 pets at a time, all temperament-matched." },
-  { q: "How do I book a service?", a: "Click 'Book a Service', fill the 6-step form with your pet and dates, and we'll confirm on WhatsApp within 30 minutes. UPI advance optional." },
+  { q: "How do I book a service?", a: "Click 'Book a Service', fill the form with your pet and dates, and we'll confirm on WhatsApp within 30 minutes." },
   { q: "What breeds and species do you accept?", a: "All friendly, vaccinated dogs and cats — including Indies, Labs, Goldens, Shih Tzus, Persians, and more. Aggressive pets are evaluated case-by-case." },
-  { q: "Do you offer pickup and drop?", a: "Yes — pickup and drop is available across Pune at ₹150–300 depending on locality. Free for stays of 7+ nights." },
-  { q: "How much does pet boarding cost in Pune?", a: "Boarding starts at ₹499/night for small dogs and ₹699/night for large dogs. Daycare from ₹299/day. Discounts on weekly and monthly packages." },
-  { q: "Are your caretakers trained?", a: "Yes. Simran has 6+ years of pet care experience, and our groomer and trainer are certified. We have a partner vet on call 24/7." },
+  { q: "Do you offer pickup and drop?", a: "Yes — pickup and drop is available depending on locality. Free for stays of 10+ nights." },
+  { q: "How much does pet boarding cost in Pune?", a: "Boarding starts at ₹499/night for small dogs and ₹799/night for large dogs. Daycare from ₹499/day. Discounts on weekly and monthly packages." },
+  { q: "Are your caretakers trained?", a: "Yes. we have 6+ years of pet care experience, and our groomer and trainer are well experienced. We have a partner vet on call 24/7." },
   { q: "What vaccinations are required?", a: "Dogs: DHPPiL + Rabies (annual). Cats: FVRCP + Rabies. Vaccination certificate must be shared at booking — no exceptions." },
   { q: "Can I visit before booking?", a: "Absolutely — we welcome a free 30-minute pre-booking visit. Just message us on WhatsApp to schedule." },
 ];
