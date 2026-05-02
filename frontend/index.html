@@ -5,12 +5,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#000000" />
         <link rel="preconnect" href="https://res.cloudinary.com" crossorigin />
-    <link rel="preload" as="image" href="https://images.unsplash.com/photo-1534361960057-19889db9621e?fm=webp&q=60&w=800&fit=crop" fetchpriority="high" />
-    <link rel="dns-prefetch" href="https://res.cloudinary.com" />
-    <link rel="dns-prefetch" href="https://simranspetvilla-production.up.railway.app" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://simranspetvilla-production.up.railway.app" crossorigin />
+        <link rel="preload" as="image" href="https://images.unsplash.com/photo-1534361960057-19889db9621e?fm=webp&q=60&w=800&fit=crop" fetchpriority="high" />
+        <link rel="dns-prefetch" href="https://res.cloudinary.com" />
+        <link rel="dns-prefetch" href="https://simranspetvilla-production.up.railway.app" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'" /><noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" /></noscript>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+        <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" /></noscript>
         <link rel="manifest" href="/manifest.json" />
         <link rel="canonical" href="https://simranspetvilla.com" />
 
@@ -20,7 +22,6 @@
         <meta name="robots" content="index, follow" />
         <meta name="author" content="Simran's PetVilla" />
 
-        <!-- Open Graph / Facebook -->
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://simranspetvilla.com/" />
         <meta property="og:title" content="Simran's PetVilla — Pune's Most Trusted Cage-Free Pet Care" />
@@ -29,14 +30,12 @@
         <meta property="og:site_name" content="Simran's PetVilla" />
         <meta property="og:locale" content="en_IN" />
 
-        <!-- Twitter -->
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content="https://simranspetvilla.com/" />
         <meta property="twitter:title" content="Simran's PetVilla — Pune's Most Trusted Cage-Free Pet Care" />
         <meta property="twitter:description" content="Cage-free pet boarding, daycare, and grooming in Pune. 4.8★ rated, 500+ reviews." />
         <meta property="twitter:image" content="/og-image.jpg" />
-        
-        <!-- Local Business Schema (helps Google show your business info) -->
+
         <script type="application/ld+json">
         {
           "@context": "https://schema.org",
@@ -73,7 +72,11 @@
     <body>
         <noscript>You need to enable JavaScript to run this app.</noscript>
         <div id="root"></div>
+
+        <script type="module" src="/src/index.jsx"></script>
+
         <script>
+        window.addEventListener('load', function() {
             !(function (t, e) {
                 var o, n, p, r;
                 e.__SV ||
@@ -84,48 +87,23 @@
                             var o = e.split(".");
                             2 == o.length && ((t = t[o[0]]), (e = o[1])),
                                 (t[e] = function () {
-                                    t.push(
-                                        [e].concat(
-                                            Array.prototype.slice.call(
-                                                arguments,
-                                                0,
-                                            ),
-                                        ),
-                                    );
+                                    t.push([e].concat(Array.prototype.slice.call(arguments, 0)));
                                 });
                         }
-                        ((p = t.createElement("script")).type =
-                            "text/javascript"),
+                        ((p = t.createElement("script")).type = "text/javascript"),
                             (p.crossOrigin = "anonymous"),
-                            (p.async = !0),
-                            (p.src =
-                                s.api_host.replace(
-                                    ".i.posthog.com",
-                                    "-assets.i.posthog.com",
-                                ) + "/static/array.js"),
-                            (r =
-                                t.getElementsByTagName(
-                                    "script",
-                                )[0]).parentNode.insertBefore(p, r);
+                            (p.src = s.api_host.replace(".i.posthog.com", "-assets.i.posthog.com") + "/static/array.js"),
+                            (r = t.getElementsByTagName("script")[0]).parentNode.insertBefore(p, r);
                         var u = e;
                         for (
                             void 0 !== a ? (u = e[a] = []) : (a = "posthog"),
                                 u.people = u.people || [],
                                 u.toString = function (t) {
                                     var e = "posthog";
-                                    return (
-                                        "posthog" !== a && (e += "." + a),
-                                        t || (e += " (stub)"),
-                                        e
-                                    );
+                                    return "posthog" !== a && (e += "." + a), t || (e += " (stub)"), e;
                                 },
-                                u.people.toString = function () {
-                                    return u.toString(1) + ".people (stub)";
-                                },
-                                o =
-                                    "init me ws ys ps bs capture je Di ks register register_once register_for_session unregister unregister_for_session Ps getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSurveysLoaded onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey canRenderSurveyAsync identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty Es $s createPersonProfile Is opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing Ss debug xs getPageViewId captureTraceFeedback captureTraceMetric".split(
-                                        " ",
-                                    ),
+                                u.people.toString = function () { return u.toString(1) + ".people (stub)"; },
+                                o = "init capture identify setPersonProperties reset get_distinct_id getGroups get_session_id alias set_config startSessionRecording stopSessionRecording".split(" "),
                                 n = 0;
                             n < o.length;
                             n++
@@ -140,7 +118,7 @@
                 person_profiles: "identified_only",
                 session_recording: false,
             });
+        });
         </script>
-      <script type="module" src="/src/index.jsx"></script>
-  </body>
+    </body>
 </html>
