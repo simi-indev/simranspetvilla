@@ -10,7 +10,10 @@ export default function Step3({ data, setData, selectedSlugs, sitterAcknowledged
   const hasFood = selectedSlugs.includes("pet-food-delivery");
   const hasTraining = selectedSlugs.includes("pet-training");
   const hasSitting = selectedSlugs.includes("pet-sitting");
-
+const timeOptions = Array.from({ length: 24 }, (_, i) => {
+  const hour = i.toString().padStart(2, "0");
+  return { value: `${hour}:00`, label: `${hour}:00` };
+});
   return (
     <div data-testid="booking-step-dates">
       <h2 className="font-display font-black text-2xl text-brand-ink mb-1">When & how?</h2>
@@ -26,8 +29,8 @@ export default function Step3({ data, setData, selectedSlugs, sitterAcknowledged
           <div>
             <span className="block text-sm font-display font-bold text-brand-ink mb-1.5">Check-in time</span>
             <select className="input-pv" value={d.checkInTime || "10:00"} onChange={(e) => setDates({ checkInTime: e.target.value })} data-testid="checkin-time">
-              {["06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00"].map(t => (
-                <option key={t} value={t}>{new Date(`2000-01-01T${t}`).toLocaleTimeString("en-IN", { hour: "numeric", minute: "2-digit", hour12: true })}</option>
+              {timeOptions.map(({ value, label }) => (
+                  <option key={value} value={value}>{label}</option>
               ))}
             </select>
           </div>

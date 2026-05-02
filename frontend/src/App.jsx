@@ -1,4 +1,5 @@
 import React, { lazy, Suspense } from "react";
+import "./lib/keepAlive";
 import "@/App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
