@@ -1,5 +1,8 @@
 import React from "react";
-import { ArrowRight, PawPrint } from "lucide-react";
+import { PawPrint, Home, Calendar, Scissors, Heart, Star, Shield, Clock, Check, ArrowRight, Phone, Mail, MapPin, Camera, Dog, Cat, Bird, Fish, Award, Smile, Truck, UserCheck, MessageCircle } from 'lucide-react';
+
+const LucideIcons = { PawPrint, Home, Calendar, Scissors, Heart, Star, Shield, Clock, Check, ArrowRight, Phone, Mail, MapPin, Camera, Award, Smile, Truck, UserCheck, MessageCircle };
+
 import { Link } from "react-router-dom";
 
 export default function ServiceCard({ service }) {

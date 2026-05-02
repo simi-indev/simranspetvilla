@@ -5,7 +5,10 @@ import { api } from "../lib/api";
 import { useBusinessInfo, buildWhatsAppLink } from "../lib/businessInfo";
 import FAQ from "../components/FAQ";
 import ServiceCard from "../components/ServiceCard";
-import { Check, ArrowRight, Calendar, MessageCircle, PawPrint } from "lucide-react";
+import { PawPrint, Home, Calendar, Scissors, Heart, Star, Shield, Clock, Check, ArrowRight, Phone, Mail, MapPin, Camera, Dog, Cat, Bird, Fish, Award, Smile, Truck, UserCheck, MessageCircle } from 'lucide-react';
+
+const LucideIcons = { PawPrint, Home, Calendar, Scissors, Heart, Star, Shield, Clock, Check, ArrowRight, Phone, Mail, MapPin, Camera, Award, Smile, Truck, UserCheck, MessageCircle };
+
 
 export default function ServicePage() {
   const { slug } = useParams();
