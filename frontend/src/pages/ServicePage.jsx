@@ -1,11 +1,11 @@
 import React from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import * as LucideIcons from "lucide-react";
+
 import { api } from "../lib/api";
 import { useBusinessInfo, buildWhatsAppLink } from "../lib/businessInfo";
 import FAQ from "../components/FAQ";
 import ServiceCard from "../components/ServiceCard";
-import { Check, ArrowRight, Calendar, MessageCircle } from "lucide-react";
+import { Check, ArrowRight, Calendar, MessageCircle, PawPrint } from "lucide-react";
 
 export default function ServicePage() {
   const { slug } = useParams();
@@ -33,7 +33,7 @@ export default function ServicePage() {
     </div>
   );
 
-  const Icon = LucideIcons[service.icon] || LucideIcons.PawPrint;
+  const Icon = LucideIcons[service.icon] || PawPrint;
   const related = allServices.filter((s) => s.slug !== slug).slice(0, 3);
 
   return (

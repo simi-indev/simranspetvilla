@@ -1,5 +1,5 @@
 import React from "react";
-import * as LucideIcons from "lucide-react";
+import { PawPrint } from "lucide-react";
 import { Check } from "lucide-react";
 
 export default function StepService({ services, selected, toggle }) {
@@ -9,7 +9,7 @@ export default function StepService({ services, selected, toggle }) {
       <p className="text-brand-muted text-sm mb-6">Pick one or combine. Combo bookings welcome.</p>
       <div className="grid sm:grid-cols-2 gap-3">
         {services.map((s) => {
-          const Icon = LucideIcons[s.icon] || LucideIcons.PawPrint;
+          const Icon = LucideIcons[s.icon] || PawPrint;
           const on = selected.includes(s.slug);
           return (
             <button key={s.slug} onClick={() => toggle(s.slug)} data-testid={`service-select-${s.slug}`}

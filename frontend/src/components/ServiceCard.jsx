@@ -1,9 +1,9 @@
 import React from "react";
-import * as LucideIcons from "lucide-react";
+import { ArrowRight, PawPrint } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function ServiceCard({ service }) {
-  const Icon = LucideIcons[service.icon] || LucideIcons.PawPrint;
+  const Icon = LucideIcons[service.icon] || PawPrint;
 
   return (
     <Link
@@ -44,7 +44,7 @@ export default function ServiceCard({ service }) {
       </p>
 
       <div className="inline-flex items-center gap-1 text-brand-primary font-display font-bold text-sm group-hover:gap-2 transition-all">
-        Learn more <LucideIcons.ArrowRight size={16} />
+        Learn more <ArrowRight size={16} />
       </div>
     </Link>
   );
