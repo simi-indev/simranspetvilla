@@ -1,6 +1,6 @@
 import React from "react";
-import { PawPrint } from "lucide-react";
-import { Check } from "lucide-react";
+import { PawPrint, Home, Calendar, Scissors, Heart, Star, Shield, Clock, Check, ArrowRight, Phone, Mail, MapPin, Camera, Award, Smile, Truck, UserCheck, MessageCircle } from "lucide-react";
+const LucideIcons = { PawPrint, Home, Calendar, Scissors, Heart, Star, Shield, Clock, Check, ArrowRight, Phone, Mail, MapPin, Camera, Award, Smile, Truck, UserCheck, MessageCircle };
 
 export default function StepService({ services, selected, toggle }) {
   return (
