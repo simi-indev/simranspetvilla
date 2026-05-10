@@ -266,7 +266,8 @@ const [loadingQuote, setLoadingQuote] = React.useState(false);
           {step === 0 && <StepService services={services} selected={data.selectedSlugs} toggle={toggleService} />}
           {step === 1 && <StepPets pets={data.pets} updatePet={updatePet} addPet={addPet} removePet={removePet} />}
           {step === 2 && <StepDates data={data} setData={setData} selectedSlugs={data.selectedSlugs} sitterAcknowledged={sitterAcknowledged} onShowSitterPopup={() => setShowSitterPopup(true)} />}
-          <StepOwner owner={data.owner} setOwner={(o) => setData({ ...data, owner: o })} notes={data.notes} setNotes={(n) => setData({ ...data, notes: n })} hasSitting={hasSitting} hasGrooming={data.selectedSlugs.includes("pet-grooming")} />          {step === 4 && <StepReview data={data} setData={setData} quote={quote} />}
+          {step === 3 && <StepOwner owner={data.owner} setOwner={(o) => setData({ ...data, owner: o })} notes={data.notes} setNotes={(n) => setData({ ...data, notes: n })} hasSitting={hasSitting} hasGrooming={data.selectedSlugs.includes("pet-grooming")} />}
+          {step === 4 && <StepReview data={data} setData={setData} quote={quote} />}
           {step === 5 && (
   <BookingPaymentStep
     bookingFormData={data}
