@@ -79,7 +79,7 @@ export default function HomePage() {
 
           <div className="relative animate-fade-up" style={{ animationDelay: "120ms" }}>
             <div className="relative aspect-[4/5] rounded-[32px] overflow-hidden shadow-hover">
-            <img src={HERO_FALLBACK} alt="Happy dog at PetVilla" className="w-full h-full object-cover" fetchpriority="high" loading="eager" width="800" height="1000" />            </div>
+            <img src={homeContent?.hero_image ? optimizeImage(homeContent.hero_image) : HERO_FALLBACK} alt="Happy dog at PetVilla" className="w-full h-full object-cover" fetchpriority="high" loading="eager" width="800" height="1000" />            </div>
             <div className="hidden md:flex absolute -bottom-6 -left-6 bg-white rounded-3xl shadow-hover px-5 py-4 items-center gap-3 max-w-xs">
               <div className="w-10 h-10 rounded-full bg-brand-secondary flex items-center justify-center text-white"><Smile size={20} /></div>
               <div>
