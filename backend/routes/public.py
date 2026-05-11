@@ -6,6 +6,7 @@ All business logic lives in services/booking_service.py.
 from fastapi import APIRouter, HTTPException
 from models import BookingCreate, Booking, ContactCreate, Contact, QuoteRequest
 from services import booking_service, pricing_service
+from utils.telegram import notify_new_booking, notify_new_lead
 
 router = APIRouter()
 
@@ -77,12 +78,9 @@ async def get_blog(slug: str):
 
 @router.post("/bookings", response_model=Booking)
 async def create_booking(payload: BookingCreate):
-    # Flow: 1. Validate input (Pydantic)
-    #       2. Create booking with auto ID + timestamp
-    #       3. Save to MongoDB
-    #       4. Return booking (frontend shows success + WhatsApp link)
-    # Future: validate service slugs exist, calculate server-side pricing
-    return await booking_service.create_booking(payload)
+    booking = await booking_service.create_booking(payload)
+    await notify_new_booking(payload.dict())
+    return booking
 
 
 @router.get("/bookings/{booking_id}", response_model=Booking)
@@ -112,6 +110,6 @@ async def get_quote(payload: QuoteRequest):
 
 @router.post("/contact", response_model=Contact)
 async def create_contact(payload: ContactCreate):
-    # Flow: 1. Validate input  2. Save to MongoDB  3. Return
-    # Future: Send WhatsApp notification to admin, auto-reply email
-    return await booking_service.create_contact(payload)
+    contact = await booking_service.create_contact(payload)
+    await notify_new_lead(payload.dict())
+    return contact

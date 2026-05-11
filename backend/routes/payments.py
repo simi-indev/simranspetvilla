@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from typing import Optional
 from config import db, RAZORPAY_KEY_ID
 from utils.payment import create_razorpay_order, verify_payment_signature, calculate_payable_amount
+from utils.telegram import notify_payment_confirmed
 
 router = APIRouter(prefix="/payments", tags=["payments"])
 
@@ -111,6 +112,11 @@ async def verify_payment(payload: VerifyPaymentRequest):
         }}
     )
 
+    await notify_payment_confirmed(
+        payload.booking_id,
+        payload.razorpay_payment_id,
+        0
+    )
     return {
         "success": True,
         "booking_id": payload.booking_id,
