@@ -288,8 +288,8 @@ const [loadingQuote, setLoadingQuote] = React.useState(false);
           <h2 className="text-2xl font-bold text-green-600 mb-2">Booking Confirmed!</h2>
           <p className="text-gray-600 mb-2">Your payment was successful.</p>
           <p className="text-gray-600 mb-4">Tap below to send us your booking details on WhatsApp.</p>
-          <a href={`https://wa.me/919988975056?text=${encodeURIComponent("Hi Simran! 🐾 My booking is confirmed!\n\nName: " + data.owner.name + "\nPet: " + (data.pets[0]?.name || "") + " (" + (data.pets[0]?.species || "") + ")\nService: " + data.selectedSlugs.join(", ") + "\nCheck-in: " + (data.dates.startDate || data.dates.sittingStart || "—") + "\nPayment: " + data.paymentType + "\n\nPlease confirm my booking. Thank you!")}`} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 bg-[#25D366] text-white font-bold px-6 py-3 rounded-full text-lg mb-4">
-            💬 Confirm on WhatsApp
+          <a href={`https://wa.me/919988975056?text=${encodeURIComponent("Hi Simran! I just completed my booking and payment.\n\nName: " + data.owner.name + "\nPet: " + (data.pets[0]?.name || "") + " (" + (data.pets[0]?.species || "") + ")\nService: " + data.selectedSlugs.join(", ") + "\nCheck-in: " + (data.dates.startDate || data.dates.sittingStart || "") + "\nPayment: " + data.paymentType + "\n\nLooking forward to hearing from you!")}`} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 bg-[#25D366] text-white font-bold px-6 py-3 rounded-full text-lg mb-4">
+            💬 Chat on WhatsApp
           </a>
           <br />
           <a href="/" className="btn-outline inline-block mt-3">Back to Home</a>
