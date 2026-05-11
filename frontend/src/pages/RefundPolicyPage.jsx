@@ -46,6 +46,7 @@ export default function RefundPolicyPage() {
       <section className="mb-8">
         <h2 className="text-xl font-semibold mb-3">Refund Process</h2>
         <p className="text-gray-700">Approved refunds are processed within <strong>5–7 business days</strong> to the original payment method. UPI refunds are typically faster (1–2 days).</p>
+        <p className="text-gray-700 mt-2">Please note: Payment gateway charges (Razorpay processing fee + GST) are non-refundable and will be deducted from the refund amount.</p>
       </section>
 
       <section className="mb-8">
