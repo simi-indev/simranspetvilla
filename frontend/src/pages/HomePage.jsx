@@ -77,10 +77,11 @@ export default function HomePage() {
             <div className="mt-8"><TrustBar /></div>
           </div>
 
-          <div className="relative animate-fade-up" style={{ animationDelay: "120ms" }}>
+          <div className="relative animate-fade-up overflow-visible" style={{ animationDelay: "120ms" }}>
             <div className="relative aspect-[4/5] rounded-[32px] overflow-hidden shadow-hover">
-            <img src="https://res.cloudinary.com/dwtatrpft/image/upload/f_auto,q_auto,w_800/petvilla/gallery/dez5sps5abhmwlz14ort.jpg" alt="Happy dog at PetVilla" className="w-full h-full object-cover" fetchpriority="high" loading="eager" width="800" height="1000" />
-            <div className="hidden md:flex absolute -bottom-6 -left-6 bg-white rounded-3xl shadow-hover px-5 py-4 items-center gap-3 max-w-xs">
+                <img src="https://res.cloudinary.com/dwtatrpft/image/upload/f_auto,q_auto,w_800/petvilla/gallery/dez5sps5abhmwlz14ort.jpg" alt="Happy dog at PetVilla" className="w-full h-full object-cover" fetchpriority="high" loading="eager" width="800" height="1000" />
+              </div>
+              <div className="hidden md:flex absolute -bottom-6 -left-6 bg-white rounded-3xl shadow-hover px-5 py-4 items-center gap-3 max-w-xs">
               <div className="w-10 h-10 rounded-full bg-brand-secondary flex items-center justify-center text-white"><Smile size={20} /></div>
               <div>
                 <div className="font-display font-extrabold text-brand-ink leading-tight">{info.review_count}+ pet parents</div>
