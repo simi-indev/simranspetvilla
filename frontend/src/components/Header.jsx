@@ -19,7 +19,7 @@ export default function Header() {
       <div className="container-pv flex items-center justify-between h-16 md:h-20">
         <Link to="/" className="flex items-center gap-2.5 group" data-testid="logo-link">
           <div className="w-10 h-10 rounded-2xl bg-brand-primary flex items-center justify-center text-white shadow-soft group-hover:rotate-6 transition-transform">
-            <PawPrint size={22} strokeWidth={2.5} />
+            <img src="https://res.cloudinary.com/dwtatrpft/image/upload/v1778504101/WhatsApp_Image_2026-05-11_at_6.19.05_PM_zjgida.jpg" alt="Simran's PetVilla" className="w-10 h-10 rounded-2xl object-cover shadow-soft group-hover:rotate-6 transition-transform" />
           </div>
           <div className="leading-tight">
             <div className="font-display font-extrabold text-lg text-brand-ink">Simran's <span className="text-brand-primary">PetVilla</span></div>
