@@ -11,7 +11,7 @@ export default function Footer() {
         <div>
           <div className="flex items-center gap-2.5 mb-4">
             <div className="w-10 h-10 rounded-2xl bg-brand-primary flex items-center justify-center">
-              <PawPrint size={22} strokeWidth={2.5} />
+              <img src="https://res.cloudinary.com/dwtatrpft/image/upload/v1778504101/WhatsApp_Image_2026-05-11_at_6.19.05_PM_zjgida.jpg" alt="Simran's PetVilla" className="w-10 h-10 rounded-2xl object-cover" />
             </div>
             <div className="font-display font-extrabold text-lg">{info.name}</div>
           </div>
