@@ -18,15 +18,6 @@ export default defineConfig({
           if (id.includes('node_modules/react') || id.includes('node_modules/react-dom') || id.includes('node_modules/react-router-dom')) {
             return 'vendor';
           }
-          if (id.includes('node_modules/lucide-react')) {
-            return 'icons';
-          }
-          if (id.includes('node_modules/razorpay') || id.includes('node_modules/sonner')) {
-            return 'payment';
-          }
-          if (id.includes('AdminDashboard') || id.includes('AdminLogin')) {
-            return 'admin';
-          }
         }
       }
     }
