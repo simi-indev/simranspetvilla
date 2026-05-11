@@ -1,0 +1,13 @@
+{
+  "short_name": "SPV Admin",
+  "name": "PetVilla Admin Dashboard",
+  "description": "Simran's PetVilla admin panel",
+  "icons": [
+    { "src": "https://res.cloudinary.com/dwtatrpft/image/upload/v1778504101/WhatsApp_Image_2026-05-11_at_6.19.05_PM_zjgida.jpg", "sizes": "192x192", "type": "image/jpeg" },
+    { "src": "https://res.cloudinary.com/dwtatrpft/image/upload/v1778504101/WhatsApp_Image_2026-05-11_at_6.19.05_PM_zjgida.jpg", "sizes": "512x512", "type": "image/jpeg" }
+  ],
+  "start_url": "/admin",
+  "display": "standalone",
+  "theme_color": "#111827",
+  "background_color": "#111827"
+}

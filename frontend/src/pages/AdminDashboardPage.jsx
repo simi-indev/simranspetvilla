@@ -49,6 +49,8 @@ export default function AdminDashboardPage() {
   React.useEffect(() => {
     if (!getAdminToken()) { navigate("/admin"); return; }
     loadAll();
+    document.querySelector('link[rel="manifest"]').setAttribute('href', '/admin-manifest.json');
+    return () => document.querySelector('link[rel="manifest"]').setAttribute('href', '/manifest.json');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate]);
 
