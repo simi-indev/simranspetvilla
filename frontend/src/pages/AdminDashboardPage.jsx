@@ -148,7 +148,7 @@ export default function AdminDashboardPage() {
       <header className="bg-white border-b border-brand-border sticky top-0 z-20">
         <div className="container-pv flex items-center justify-between h-16">
           <Link to="/" className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-brand-primary flex items-center justify-center text-white"><PawPrint size={18} strokeWidth={2.5} /></div>
+            <img src="https://res.cloudinary.com/dwtatrpft/image/upload/v1778504101/WhatsApp_Image_2026-05-11_at_6.19.05_PM_zjgida.jpg" alt="Simran's PetVilla" className="w-9 h-9 rounded-xl object-cover" />
             <div className="leading-tight">
               <div className="font-display font-extrabold text-base">PetVilla Admin</div>
               <div className="text-[11px] text-brand-muted -mt-0.5">Owner dashboard</div>
