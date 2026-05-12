@@ -256,7 +256,10 @@ async def create_booking(payload: BookingCreate) -> Booking:
         raise Exception("Database not available")
         
     await db.bookings.insert_one(booking.model_dump())
-    send_email_notification(booking)  # 📧 Notify owner
+    try:
+        send_email_notification(booking)  # 📧 Notify owner
+    except Exception as e:
+        logger.warning(f"Email notification failed (non-critical): {e}")
     return booking
 
 
