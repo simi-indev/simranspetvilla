@@ -45,7 +45,9 @@ export default function BlogPostPage() {
         </div>
         <div className="mt-8" data-testid="blog-content">
           <p className="text-xl text-brand-muted leading-relaxed font-display italic mb-6 border-l-4 border-brand-primary pl-5">{post.excerpt}</p>
-          {post.content.map((line, i) => renderBlock(line, i))}
+          {post.content.flatMap((block, i) => 
+            block.split('\n').filter(l => l.trim()).map((line, j) => renderBlock(line, `${i}-${j}`))
+          )}
         </div>
         <div className="mt-12 bg-brand-sage/40 rounded-3xl p-6 md:p-10 text-center">
           <h3 className="font-display font-black text-2xl md:text-3xl text-brand-ink">Ready to book?</h3>
