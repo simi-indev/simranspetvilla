@@ -164,7 +164,7 @@ export default function BlogTab() {
             <textarea
               value={form.excerpt}
               onChange={(e) => setForm({ ...form, excerpt: e.target.value })}
-              rows={2}
+              rows={4}
               className="w-full p-3 px-4 bg-brand-bg border-2 border-brand-border rounded-2xl outline-none focus:border-brand-primary resize-none"
               data-testid="blog-excerpt"
             />
@@ -224,14 +224,14 @@ export default function BlogTab() {
               <Plus size={14} /> Add paragraph
             </button>
           </div>
-          <p className="text-xs text-brand-muted">Each block is a paragraph. Start a line with ## for a heading section (e.g. "## Why home-cooked").</p>
+          <p className="text-xs text-brand-muted">Each block is a paragraph. Use ## for headings (e.g. "## Why cage-free"), ** ** for bold, and numbered lists (1. 2. 3.). Add a new block per section.</p>
           <div className="space-y-3">
             {form.content.map((para, idx) => (
               <div key={idx} className="flex gap-2">
                 <textarea
                   value={para}
                   onChange={(e) => updateContent(idx, e.target.value)}
-                  rows={3}
+                  rows={8}
                   placeholder={idx === 0 ? "Opening paragraph…" : "## Section Heading or paragraph text…"}
                   className="flex-1 p-3 px-4 bg-brand-bg border-2 border-brand-border rounded-2xl outline-none focus:border-brand-primary resize-none text-sm"
                   data-testid={`content-${idx}`}
