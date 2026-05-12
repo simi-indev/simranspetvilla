@@ -98,7 +98,7 @@ def send_email_notification(booking):
         msg["Reply-To"] = "hello@simranspetvilla.com"
         msg.attach(MIMEText(body, "html"))
 
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=5) as server:
             server.login(sender, password)
             server.sendmail(sender, sender, msg.as_string())
 
