@@ -256,10 +256,8 @@ async def create_booking(payload: BookingCreate) -> Booking:
         raise Exception("Database not available")
         
     await db.bookings.insert_one(booking.model_dump())
-    try:
-        send_email_notification(booking)  # 📧 Notify owner
-    except Exception as e:
-        logger.warning(f"Email notification failed (non-critical): {e}")
+    import threading
+    threading.Thread(target=send_email_notification, args=(booking,), daemon=True).start()
     return booking
 
 
